@@ -135,7 +135,7 @@ function resetButton(div, map, text, pathHistory, lineList, markerList) {
     div.appendChild(submitButton);
     // Set CSS for the control interior.
     const resetButton = document.createElement("img");
-    resetButton.src = "../src/arrow-counterclockwise.svg"
+    resetButton.src = "src/arrow-counterclockwise.svg"
     resetButton.style.display = "inline";
     submitButton.appendChild(resetButton)
     const controlText = document.createElement("div");
@@ -200,7 +200,7 @@ function submitButton(div, map, text, pathHistory, lineList, markerList) {
     controlText.innerHTML = text;
     submitButton.appendChild(controlText);
     const resetButton = document.createElement("img");
-    resetButton.src = "../src/arrow-right-short.svg"
+    resetButton.src = "src/arrow-right-short.svg"
     resetButton.style.display = "inline";
     submitButton.appendChild(resetButton)
 }
