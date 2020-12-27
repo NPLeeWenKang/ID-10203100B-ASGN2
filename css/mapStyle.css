@@ -1,0 +1,36 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+#map{
+    height: calc(100vh - 50px);
+    margin: 0px;
+}
+
+.modal-body div {
+    padding-bottom: 5px;
+}
+input.time{
+    width: 2rem;
+    text-align: center;
+}
+input.distanceDisplayModal{
+    display: inline;
+    width: 10rem;
+}
+
+@media (max-width: 600px){
+    #map{
+        height: calc(100vh - 50px);
+        margin: 0px;
+    }
+    input.distanceDisplayModal{
+        display: block;
+        width: 100%;
+    }
+}
