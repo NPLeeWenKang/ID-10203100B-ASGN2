@@ -66,8 +66,9 @@ function initListeners(pathHistory, lineList, markerList) {
                 lineList: lineList,
             }
             let newState = {
-                ...JSON.parse(originalState),
                 [`${Date.now()}`]: arr,
+                ...JSON.parse(originalState),
+
             }
             localStorage.setItem('state', JSON.stringify(newState))
             window.location.href = "index.html"
@@ -286,25 +287,27 @@ function drawLine(pathHistory, lineList, map) {
     flightPath.setMap(map);
 }
 function setCenterMap(map) {
-    var geo = new google.maps.Geocoder();
-    geo.geocode({ 'address': 'singapore' }, function (result) {
+    $.ajax({
+        method: "POST",
+        url: "https://ipapi.co/json",
+        error: (function () {
+            alert("AJAX error (https://ipapi.co/json)")
+        }),
+    }).done(function (result) {
         console.log(result)
-        map.setCenter(result[0].geometry.location)
+        map.setCenter({ lat: result.latitude, lng: result.longitude })
     })
 }
 
 
 function initMap() {
-    let lol = localStorage.getItem("state");
-    console.log(JSON.parse(lol))
-    console.log("ok")
     const myLatlng = { lat: 0, lng: 0 };
     const markerList = []
     const lineList = []
     const pathHistory = []
     initListeners(pathHistory, lineList, markerList);
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
+        zoom: 10,
         center: myLatlng,
         clickableIcons: false,
         mapTypeControl: false,
