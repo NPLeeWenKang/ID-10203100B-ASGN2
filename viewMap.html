@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/mapStyle.css">
+
+</head>
+
+<body>
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container-fluid">
+            <span class="navbar-brand mb-0 h1">Running App</span>
+        </div>
+    </nav>
+    <div id="map">
+    </div>
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" autocomplete="off">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Run Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="distance" distance="0">
+                        Total distance:
+                        <input type="text" id="metric" class="form-control distanceDisplayModal" readonly>
+                        /
+                        <input type="text" id="imperial" class="form-control distanceDisplayModal" readonly>
+                        <div class="valid-feedback">
+                            Looks great!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please path your run.
+                        </div>
+                    </div>
+                    <div>
+                        <label for="pathName">Name your run: <span class="text-danger">*required</span></label>
+                        <input type="text" id="pathName" class="form-control">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please choose a name.
+                        </div>
+                    </div>
+                    <div>
+                        Your time:
+                        <input class="time" type="text" maxlength="2"> hr
+                        <input class="time" type="text" maxlength="2"> min
+                        <input class="time" type="text" maxlength="2"> s
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <p>Want to save?</p>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                    <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+    crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+<script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI&callback=initMap&libraries=&v=weekly"
+    defer>
+    </script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
+<script src="js/map.js"></script>
+
+</html>
