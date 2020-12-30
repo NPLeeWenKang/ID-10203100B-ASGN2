@@ -1,3 +1,20 @@
+
+
+function setMap(map) {
+    const queryString = window.location.search;
+    const key = new URLSearchParams(queryString).get("key")
+    const state = JSON.parse(localStorage.getItem("state"))
+    const chosenMapState = state[key]
+    const lineList = chosenMapState.lineList
+    for (const [key, value] of Object.entries(lineList)) {
+        let marker = new google.maps.Marker({
+            position: value,
+            map: map,
+        });
+        drawLine(lineList, map)
+        map.setCenter(lineList[0])
+    }
+}
 // var firebaseConfig = {
 //     apiKey: "AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI",
 //     authDomain: "wired-apex-298001.firebaseapp.com",
@@ -271,7 +288,7 @@ function calculateDistance(markerList) {
 
     }
 }
-function drawLine(pathHistory, lineList, map) {
+function drawLine(lineList, map) {
     const flightPath = new google.maps.Polyline({
         path: lineList,
         geodesic: true,
@@ -279,11 +296,6 @@ function drawLine(pathHistory, lineList, map) {
         strokeOpacity: 1.0,
         strokeWeight: 2,
     });
-    if (pathHistory.length == 1) {
-        pathHistory[0].setMap(null)
-        pathHistory.splice(0, 1)
-    }
-    pathHistory.push(flightPath)
     flightPath.setMap(map);
 }
 function setCenterMap(map) {
@@ -317,15 +329,14 @@ function initMap() {
     const pathHistory = []
     initListeners(pathHistory, lineList, markerList);
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 10,
+        zoom: 15,
         center: myLatlng,
         clickableIcons: false,
         mapTypeControl: false,
         streetViewControl: false,
         fullscreenControl: false,
     });
-    setCenterMap(map)
-
+    setMap(map)
     const resetDiv = document.createElement("div");
     resetButton(resetDiv, map, "Reset", pathHistory, lineList, markerList);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(resetDiv);
@@ -337,56 +348,6 @@ function initMap() {
     const display = document.createElement("div");
     distanceDisplay(display);
     map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(display);
-    map.addListener("click", (mapsMouseEvent) => {
-        let marker = new google.maps.Marker({
-            position: mapsMouseEvent.latLng.toJSON(),
-            map: map,
-        });
-        markerList.push(marker)
 
-        lineList.push(mapsMouseEvent.latLng.toJSON())
-        marker.addListener('click', () => {
-            if (markerList.indexOf(marker) == 0 && markerList.length > 2) {
-                markerList.push(markerList[0])
-                lineList.push(lineList[0])
-                drawLine(pathHistory, lineList, map)
-            } else {
-                const index = markerList.indexOf(marker)
-                marker.setMap(null)
-                markerList.splice(index, 1)
-                lineList.splice(index, 1)
-                drawLine(pathHistory, lineList, map)
-            }
-
-        })
-        console.log("marker: ", markerList.length)
-        console.log("line: ", lineList.length)
-        console.log("path:", pathHistory.length)
-        drawLine(pathHistory, lineList, map)
-        calculateDistance(markerList)
-
-        // if (list.length == 2) {
-        //     var service = new google.maps.DistanceMatrixService();
-        //     service.getDistanceMatrix(
-        //         {
-        //             origins: [list[0]],
-        //             destinations: [list[1]],
-        //         }, function (result, status) {
-        //             console.log(result);
-        //         });
-        //     // $.ajax({
-        //     //     method: "GET",
-        //     //     dataType: "json",
-        //     //     contentType: "text/plain",
-        //     //     url: "https://maps.googleapis.com/maps/api/distancematrix/json",
-        //     //     headers: {},
-        //     //     data: { origins: "1.4321913911362303, 103.78751998122362", destinations: "1.4313172639890452, 103.78433888133196|1.4339932718107122, 103.78351544316439", },
-        //     // }).done(function (result) {
-        //     //     console.log(result)
-        //     // })
-        //     $('#length').text(getDistanceFromLatLonInKm(list[0].lat, list[0].lng, list[1].lat, list[1].lng))
-        //     console.log(getDistanceFromLatLonInKm(list[0].lat, list[0].lng, list[1].lat, list[1].lng))
-        //}
-    })
 
 }

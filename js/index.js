@@ -68,6 +68,10 @@ function createListElement(listDOM, indiviualElement, key) {
     controlDiv.appendChild(viewBtn)
     controlDiv.appendChild(deleteBtn)
 
+    viewBtn.addEventListener("click", function (event) {
+        window.location.href = `viewMap.html?key=${this.id}`
+    })
+
     deleteBtn.addEventListener("click", function (event) {
         console.log("Delete")
         const state = JSON.parse(localStorage.getItem("state"))
