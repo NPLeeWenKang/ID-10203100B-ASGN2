@@ -120,7 +120,7 @@ function getDistanceFromLatLonInKm(mk1, mk2) {
 function deg2rad(deg) {
     return deg * (Math.PI / 180)
 }
-function resetButton(div, map, text, pathHistory, lineList, markerList) {
+function resetButton(div, pathHistory, lineList, markerList) {
     const submitButton = document.createElement("div");
     submitButton.style.display = "flex";
     submitButton.style.justifyContent = "center";
@@ -147,7 +147,7 @@ function resetButton(div, map, text, pathHistory, lineList, markerList) {
     controlText.style.lineHeight = "38px";
     controlText.style.paddingLeft = "5px";
     controlText.style.paddingRight = "5px";
-    controlText.innerHTML = text;
+    controlText.innerHTML = "Reset";
     submitButton.appendChild(controlText);
     submitButton.addEventListener("click", function () {
         markerList.forEach(element => {
@@ -170,7 +170,41 @@ function resetButton(div, map, text, pathHistory, lineList, markerList) {
     })
 
 }
-function submitButton(div, map, text, pathHistory, lineList, markerList) {
+function backButton(div) {
+    const button = document.createElement("div");
+    button.style.display = "flex";
+    button.style.justifyContent = "center";
+    button.style.alignItems = "center";
+    button.style.backgroundColor = "#fff";
+    button.style.border = "2px solid #fff";
+    button.style.borderRadius = "3px";
+    button.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+    button.style.cursor = "pointer";
+    button.style.margin = "5px"
+    button.style.marginBottom = "10px";
+    button.style.textAlign = "center";
+    div.appendChild(button);
+    // Set CSS for the control interior.
+    const icon = document.createElement("img");
+    icon.src = "src/arrow-left-short.svg"
+    icon.style.display = "inline";
+    button.appendChild(icon)
+
+    const text = document.createElement("div");
+    text.style.display = "inline";
+    text.style.color = "rgb(25,25,25)";
+    text.style.fontFamily = "Roboto,Arial,sans-serif";
+    text.style.fontSize = "15px";
+    text.style.lineHeight = "38px";
+    text.style.paddingRight = "5px";
+    text.innerHTML = "Back";
+    button.appendChild(text);
+    button.addEventListener("click", function () {
+        window.location.href = "index.html"
+    })
+
+}
+function submitButton(div) {
     const submitButton = document.createElement("div");
     const attribute1 = document.createAttribute("data-bs-toggle");
     attribute1.value = "modal"
@@ -198,7 +232,7 @@ function submitButton(div, map, text, pathHistory, lineList, markerList) {
     controlText.style.fontSize = "15px";
     controlText.style.lineHeight = "38px";
     controlText.style.paddingLeft = "5px";
-    controlText.innerHTML = text;
+    controlText.innerHTML = "Submit";
     submitButton.appendChild(controlText);
     const resetButton = document.createElement("img");
     resetButton.src = "src/arrow-right-short.svg"
@@ -255,7 +289,8 @@ function calculateDistance(markerList) {
         distanceInKm = (distance).toFixed(2)
         if (distanceInKm >= 1) {
             distanceInMile = (distance / 1.609).toFixed(2);
-            $(".distanceDisplay ").text(`Total Distance: ${distanceInKm} km (${distanceInMile} mi)`)
+            console.log($(".distanceDisplay").text())
+            $(".distanceDisplay").text(`Total Distance: ${distanceInKm} km (${distanceInMile} mi)`)
             $("#distance").attr("distance", `${distance}`)
             $("#metric").val(`${distanceInKm} km`)
             $("#imperial").val(`${distanceInMile} mile`)
@@ -327,11 +362,12 @@ function initMap() {
     setCenterMap(map)
 
     const resetDiv = document.createElement("div");
-    resetButton(resetDiv, map, "Reset", pathHistory, lineList, markerList);
+    backButton(resetDiv);
+    resetButton(resetDiv, pathHistory, lineList, markerList);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(resetDiv);
 
     const submitDiv = document.createElement("div");
-    submitButton(submitDiv, map, "Submit", pathHistory, lineList, markerList);
+    submitButton(submitDiv);
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(submitDiv);
 
     const display = document.createElement("div");

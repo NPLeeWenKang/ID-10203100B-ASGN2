@@ -1,55 +1,24 @@
 
 
-function setMap(map) {
+function setMap(map, lineList, markerList) {
     const queryString = window.location.search;
     const key = new URLSearchParams(queryString).get("key")
     const state = JSON.parse(localStorage.getItem("state"))
     const chosenMapState = state[key]
-    const lineList = chosenMapState.lineList
+    lineList = chosenMapState.lineList
     for (const [key, value] of Object.entries(lineList)) {
         let marker = new google.maps.Marker({
             position: value,
             map: map,
         });
-        drawLine(lineList, map)
-        map.setCenter(lineList[0])
-    }
-}
-// var firebaseConfig = {
-//     apiKey: "AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI",
-//     authDomain: "wired-apex-298001.firebaseapp.com",
-//     projectId: "wired-apex-298001",
-//     storageBucket: "wired-apex-298001.appspot.com",
-//     messagingSenderId: "474498507020",
-//     appId: "1:474498507020:web:b517e6139a985f82832929",
-//     measurementId: "G-0FBKY5Y04J"
-// };
-// firebase.initializeApp(firebaseConfig);
-// var provider = new firebase.auth.GoogleAuthProvider();
-// firebase.auth().onAuthStateChanged(((user) => {
-//     if (user) {
-//         console.log(user.uid)
-//     } else {
-//         firebase.auth().signInWithRedirect(provider).then((result) => {
-//             console.log(result)
-//         });
-//     }
-// }))
+        markerList.push(marker)
 
-// $(document).ready(function () {
-//     var param = { lastName: "Doe", firstName: "John" };
-//     var randome = Math.floor((Math.random() * 100000000) + 1)
-//     $.ajax({
-//         url: "https://wired-apex-298001-default-rtdb.firebaseio.com/user/97554689.json",
-//         type: "get",
-//         success: function (result) {
-//             console.log(result)
-//         },
-//         error: function (error) {
-//             alert("error: " + error);
-//         }
-//     });
-// });
+    }
+    $("#pathName").val(`Duplicate of ${chosenMapState.name}`)
+    drawLine(lineList, map)
+    map.setCenter(lineList[0])
+}
+
 function initListeners(pathHistory, lineList, markerList) {
     const savebutton = document.getElementById("saveButton");
     //$('#saveButton').replaceWith($('#saveButton').clone());
@@ -137,36 +106,37 @@ function getDistanceFromLatLonInKm(mk1, mk2) {
 function deg2rad(deg) {
     return deg * (Math.PI / 180)
 }
-function resetButton(div, map, text, pathHistory, lineList, markerList) {
-    const submitButton = document.createElement("div");
-    submitButton.style.display = "flex";
-    submitButton.style.justifyContent = "center";
-    submitButton.style.alignItems = "center";
-    submitButton.style.backgroundColor = "#fff";
-    submitButton.style.border = "2px solid #fff";
-    submitButton.style.borderRadius = "3px";
-    submitButton.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-    submitButton.style.cursor = "pointer";
-    submitButton.style.margin = "5px"
-    submitButton.style.marginBottom = "10px";
-    submitButton.style.textAlign = "center";
-    div.appendChild(submitButton);
+function resetButton(div, pathHistory, lineList, markerList) {
+    const button = document.createElement("div");
+    button.style.display = "flex";
+    button.style.justifyContent = "center";
+    button.style.alignItems = "center";
+    button.style.backgroundColor = "#fff";
+    button.style.border = "2px solid #fff";
+    button.style.borderRadius = "3px";
+    button.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+    button.style.cursor = "pointer";
+    button.style.margin = "5px"
+    button.style.marginBottom = "10px";
+    button.style.textAlign = "center";
+    div.appendChild(button);
     // Set CSS for the control interior.
-    const resetButton = document.createElement("img");
-    resetButton.src = "src/arrow-counterclockwise.svg"
-    resetButton.style.display = "inline";
-    submitButton.appendChild(resetButton)
-    const controlText = document.createElement("div");
-    controlText.style.display = "inline";
-    controlText.style.color = "rgb(25,25,25)";
-    controlText.style.fontFamily = "Roboto,Arial,sans-serif";
-    controlText.style.fontSize = "15px";
-    controlText.style.lineHeight = "38px";
-    controlText.style.paddingLeft = "5px";
-    controlText.style.paddingRight = "5px";
-    controlText.innerHTML = text;
-    submitButton.appendChild(controlText);
-    submitButton.addEventListener("click", function () {
+    const icon = document.createElement("img");
+    icon.src = "src/arrow-counterclockwise.svg"
+    icon.style.display = "inline";
+    button.appendChild(icon)
+
+    const text = document.createElement("div");
+    text.style.display = "inline";
+    text.style.color = "rgb(25,25,25)";
+    text.style.fontFamily = "Roboto,Arial,sans-serif";
+    text.style.fontSize = "15px";
+    text.style.lineHeight = "38px";
+    text.style.paddingLeft = "5px";
+    text.style.paddingRight = "5px";
+    text.innerHTML = "Reset";
+    button.appendChild(text);
+    button.addEventListener("click", function () {
         markerList.forEach(element => {
             element.setMap(null);
         });
@@ -185,44 +155,49 @@ function resetButton(div, map, text, pathHistory, lineList, markerList) {
         //console.log(pathHistory)
         //console.log("ok");
     })
-
 }
-function submitButton(div, map, text, pathHistory, lineList, markerList) {
-    const submitButton = document.createElement("div");
+
+function submitButton(div) {
+    const button = document.createElement("div");
     const attribute1 = document.createAttribute("data-bs-toggle");
     attribute1.value = "modal"
     const attribute2 = document.createAttribute("data-bs-target");
     attribute2.value = "#staticBackdrop"
-    submitButton.setAttributeNode(attribute1);
-    submitButton.setAttributeNode(attribute2);
-    submitButton.style.display = "flex";
-    submitButton.style.justifyContent = "center";
-    submitButton.style.alignItems = "center";
-    submitButton.style.backgroundColor = "#fff";
-    submitButton.style.border = "2px solid #fff";
-    submitButton.style.borderRadius = "3px";
-    submitButton.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
-    submitButton.style.cursor = "pointer";
-    submitButton.style.margin = "5px"
-    submitButton.style.marginBottom = "10px";
-    submitButton.style.textAlign = "center";
-    div.appendChild(submitButton);
+    button.setAttributeNode(attribute1);
+    button.setAttributeNode(attribute2);
+    button.style.display = "flex";
+    button.style.justifyContent = "center";
+    button.style.alignItems = "center";
+    button.style.backgroundColor = "#fff";
+    button.style.border = "2px solid #fff";
+    button.style.borderRadius = "3px";
+    button.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+    button.style.cursor = "pointer";
+    button.style.margin = "5px"
+    button.style.marginBottom = "10px";
+    button.style.textAlign = "center";
+    div.appendChild(button);
+
+
+
     // Set CSS for the control interior.
-    const controlText = document.createElement("div");
-    controlText.style.display = "inline";
-    controlText.style.color = "rgb(25,25,25)";
-    controlText.style.fontFamily = "Roboto,Arial,sans-serif";
-    controlText.style.fontSize = "15px";
-    controlText.style.lineHeight = "38px";
-    controlText.style.paddingLeft = "5px";
-    controlText.innerHTML = text;
-    submitButton.appendChild(controlText);
-    const resetButton = document.createElement("img");
-    resetButton.src = "src/arrow-right-short.svg"
-    resetButton.style.display = "inline";
-    submitButton.appendChild(resetButton)
+    const text = document.createElement("div");
+    text.style.display = "inline";
+    text.style.color = "rgb(25,25,25)";
+    text.style.fontFamily = "Roboto,Arial,sans-serif";
+    text.style.fontSize = "15px";
+    text.style.lineHeight = "38px";
+    text.style.paddingLeft = "5px";
+    text.innerHTML = "Duplicate";
+    button.appendChild(text);
+
+    const icon = document.createElement("img");
+    icon.src = "src/arrow-right-short.svg"
+    icon.style.display = "inline";
+    button.appendChild(icon)
+
 }
-function distanceDisplay(div) {
+function distanceDisplay(div, markerList) {
     div.style.width = "100%"
     div.style.display = "flex";
     div.style.justifyContent = "center"
@@ -255,7 +230,7 @@ function distanceDisplay(div) {
     distanceText.style.fontSize = "12px";
     distanceText.style.paddingLeft = "5px";
     distanceText.style.paddingRight = "5px";
-    distanceText.innerHTML = "Total Distance:";
+    distanceText.innerHTML = calculateDistance(markerList);
     displayBox.appendChild(distanceText);
 
 }
@@ -268,22 +243,23 @@ function calculateDistance(markerList) {
         let point1 = markerList[i];
         let point2 = markerList[i + 1];
         distance += getDistanceFromLatLonInKm(point1, point2)
-        console.log(distance)
         distanceInKm = (distance).toFixed(2)
         if (distanceInKm >= 1) {
             distanceInMile = (distance / 1.609).toFixed(2);
-            $(".distanceDisplay ").text(`Total Distance: ${distanceInKm} km (${distanceInMile} mi)`)
             $("#distance").attr("distance", `${distance}`)
             $("#metric").val(`${distanceInKm} km`)
             $("#imperial").val(`${distanceInMile} mile`)
+            return `Total Distance: ${distanceInKm} km (${distanceInMile} mi)`
+
 
         } else {
             distanceInM = (distance * 1000).toFixed(2);
             distanceinFt = (distance * 3281).toFixed(2);
-            $(".distanceDisplay ").text(`Total Distance: ${distanceInM} m (${distanceinFt} ft)`)
             $("#distance").attr("distance", `${distance}`)
             $("#metric").val(`${distanceInM} m`)
             $("#imperial").val(`${distanceinFt} ft`)
+            return `Total Distance: ${distanceInM} m (${distanceinFt} ft)`
+
         }
 
     }
@@ -298,18 +274,6 @@ function drawLine(lineList, map) {
     });
     flightPath.setMap(map);
 }
-function setCenterMap(map) {
-    $.ajax({
-        method: "POST",
-        url: "https://ipapi.co/json",
-        error: (function () {
-            alert("AJAX error (https://ipapi.co/json)")
-        }),
-    }).done(function (result) {
-        console.log(result)
-        map.setCenter({ lat: result.latitude, lng: result.longitude })
-    })
-}
 
 function gm_authFailure(err) {
     console.log(window.google.maps.disabled)
@@ -322,6 +286,7 @@ const callback = (results, status) => {
         // handle this case
     }
 };
+
 function initMap() {
     const myLatlng = { lat: 0, lng: 0 };
     const markerList = []
@@ -336,17 +301,19 @@ function initMap() {
         streetViewControl: false,
         fullscreenControl: false,
     });
-    setMap(map)
+
+    setMap(map, lineList, markerList)
+
     const resetDiv = document.createElement("div");
-    resetButton(resetDiv, map, "Reset", pathHistory, lineList, markerList);
+    resetButton(resetDiv, pathHistory, lineList, markerList);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(resetDiv);
 
     const submitDiv = document.createElement("div");
-    submitButton(submitDiv, map, "Submit", pathHistory, lineList, markerList);
+    submitButton(submitDiv);
     map.controls[google.maps.ControlPosition.TOP_RIGHT].push(submitDiv);
 
     const display = document.createElement("div");
-    distanceDisplay(display);
+    distanceDisplay(display, markerList);
     map.controls[google.maps.ControlPosition.BOTTOM_CENTER].push(display);
 
 
