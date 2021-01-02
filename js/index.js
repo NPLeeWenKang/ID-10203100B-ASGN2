@@ -20,7 +20,9 @@ function loadList() {
         createListElement(listDOM, value, key)
     }
 }
+function loadDateListNode(dateData) {
 
+}
 function loadChart(dateData, tempData) {
     const ctx = document.getElementById("myChart")
     var month = new Array();
@@ -75,7 +77,6 @@ function loadChart(dateData, tempData) {
             scales: {
                 yAxes: [{
                     ticks: {
-                        stepSize: 0.5,
                         min: Math.floor(Math.min.apply(null, tempData) - 0.5),
                         max: Math.ceil(Math.max.apply(null, tempData) + 0.5),
                     },
@@ -159,6 +160,67 @@ const mapButton = document.getElementById("button-to-map")
 mapButton.addEventListener("click", function () {
     window.location.href = "map.html"
 })
+function createDateString_DMY(date) {
+    var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    const myDate = new Date(date * 1000)
+    return `${myDate.getDate()} ${month[myDate.getMonth()]} ${myDate.getFullYear()}`
+}
+function createDateString_DMD(date) {
+    var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+    var day = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+    const myDate = new Date(date * 1000)
+    return `${day[myDate.getDay()]}, ${month[myDate.getMonth()]} ${myDate.getDate()}`
+}
+function createDailyListNode(dailyForecast, date) {
+
+    const parentDiv = document.createElement("div")
+    parentDiv.className = "row g-0"
+    const childDiv_col5 = document.createElement("div")
+    childDiv_col5.className = "col-5"
+    childDiv_col5.innerHTML = createDateString_DMD(date)
+    const childDiv_col3 = document.createElement("div")
+    childDiv_col3.className = "col-3"
+    const childDiv_col4 = document.createElement("div")
+    childDiv_col4.className = "col-4"
+    parentDiv.appendChild(childDiv_col5)
+    parentDiv.appendChild(childDiv_col3)
+    parentDiv.appendChild(childDiv_col4)
+    dailyForecast.appendChild(parentDiv)
+}
+function initHourly(weatherResult) {
+    const tempData = []
+    const dateData = []
+    for (var i = 0; i <= 12; i++) {
+        const element = weatherResult.hourly[i]
+        tempData.push(element.temp)
+        const date = new Date(element.dt * 1000)
+        if (date.getHours() > 12) {
+            dateData.push(`${date.getHours() - 12} pm`)
+        } else {
+            if (date.getHours() == 0) {
+                dateData.push(`12 am`)
+            } else {
+                dateData.push(`${date.getHours()} am`)
+            }
+        }
+
+    }
+    loadChart(dateData, tempData)
+}
+function initDaily(weatherResult) {
+    const data = []
+    const dailyForecast = document.getElementById("daily-forecast")
+    for (var i = 0; i <= 7; i++) {
+        const element = weatherResult.daily[i]
+        data.push(element)
+        createDailyListNode(dailyForecast, element.dt)
+    }
+
+
+
+
+
+}
 $.ajax({
     method: "POST",
     url: "https://ipapi.co/json",
@@ -167,31 +229,11 @@ $.ajax({
     }),
 }).done(function (ipResult) {
     $.ajax({
-        url: `https://api.openweathermap.org/data/2.5/onecall?lat=${ipResult.latitude}&lon=${ipResult.longitude}&appid=eea225520939f59f9dcd0ea6046d512b&exclude=current,minutely,daily,alerts&units=metric`
+        url: `https://api.openweathermap.org/data/2.5/onecall?lat=${ipResult.latitude}&lon=${ipResult.longitude}&appid=eea225520939f59f9dcd0ea6046d512b&exclude=current,minutely,alerts&units=metric`
     }).done(function (weatherResult) {
         console.log(weatherResult)
-        const tempData = []
-        const dateData = []
-        const options = {}
-
-        for (var i = 0; i <= 12; i++) {
-            const element = weatherResult.hourly[i]
-            tempData.push(element.temp)
-            const date = new Date(element.dt * 1000)
-            if (date.getHours() > 12) {
-                dateData.push(`${date.getHours() - 12} pm`)
-            } else {
-                if (date.getHours() == 0) {
-                    dateData.push(`12 am`)
-                } else {
-                    dateData.push(`${date.getHours()} am`)
-                }
-            }
-
-        }
-
-        loadChart(dateData, tempData)
-
+        initHourly(weatherResult)
+        initDaily(weatherResult)
     })
 })
 
