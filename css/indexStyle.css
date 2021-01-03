@@ -29,11 +29,7 @@
 #leftColumn{
     height: 100%;
 }
-@media (max-width:768px){
-    .card{
-        height: 100%;
-    }
-}
+
 .card-header{
     display: flex;
     justify-content:space-between;
@@ -81,9 +77,35 @@
     margin: auto;
     margin-top: 5px;
     margin-bottom: 5px;
-    max-width: 500px;
+    max-width: 600px;
+}
+#daily-forecast>div{
+    padding: 3px;
+    border-radius: 3px;
+    cursor: default;
+}
+#daily-forecast>div:hover{
+    background-color: rgba(0,0,0,0.125);
 }
 #current-weather>img{
     width: 75px;
     height: 75px;
+}
+@media (max-width:768px){
+    #statistics{
+        min-height: 100vh !important;
+        padding-left: 0px;
+    }
+    .card{
+        height: 100%;
+    }
+    .dateDiv{
+        font-size: 15px !important;
+    }
+    .iconPlusTemp{
+        font-size: 11px !important;
+    }
+    .weatherText{
+        font-size: 11px !important;
+    }
 }

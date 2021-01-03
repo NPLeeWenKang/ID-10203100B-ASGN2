@@ -156,10 +156,6 @@ function createListElement(listDOM, indiviualElement, key) {
     card.appendChild(controlDiv)
     listDOM.appendChild(card)
 }
-const mapButton = document.getElementById("button-to-map")
-mapButton.addEventListener("click", function () {
-    window.location.href = "map.html"
-})
 function createDateString_DMY(date) {
     var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     const myDate = new Date(date * 1000)
@@ -260,50 +256,5 @@ $.ajax({
     })
 })
 
-function initDisplayListeners() {
-    if (window.innerWidth < 768) {
-        $("#statistics").css("display", "none")
-        $(".list-group-item").off('mouseenter mouseleave');
-        $(".list-group-item .list-item-control").css("visibility", "visible")
-    } else {
-        $("#statistics").css("display", "")
-        $(".list-group-item .list-item-control").css("visibility", "hidden")
-        $(".list-group-item").off('mouseenter mouseleave');
-        $(".list-group-item").hover(function () {
-            console.log("ok")
-            if ($(".list-item-control", this).css("visibility") == "visible") {
-                $(".list-item-control", this).css("visibility", "hidden")
-            } else {
-                $(".list-item-control", this).css("visibility", "visible")
-            }
-
-        })
-    }
-    window.addEventListener("resize", function (event) {
-        if (window.innerWidth < 768) {
-            $("#statistics").css("display", "none")
-            $(".list-group-item").off('mouseenter mouseleave');
-            $(".list-group-item .list-item-control").css("visibility", "visible")
-        } else {
-            $("#statistics").css("display", "")
-            $(".list-group-item .list-item-control").css("visibility", "hidden")
-            $(".list-group-item").off('mouseenter mouseleave');
-            $(".list-group-item").hover(function () {
-                console.log("ok")
-                if ($(".list-item-control", this).css("visibility") == "visible") {
-                    $(".list-item-control", this).css("visibility", "hidden")
-                } else {
-                    $(".list-item-control", this).css("visibility", "visible")
-                }
-
-            })
-        }
-    })
-}
 
 
-
-window.onload = () => {
-    loadList()
-    initDisplayListeners()
-}
