@@ -263,10 +263,13 @@ $.ajax({
 function initDisplayListeners() {
     if (window.innerWidth < 768) {
         $("#statistics").css("display", "none")
+        $("#nav-bar-hamburger").css("display", "")
         $(".list-group-item").off('mouseenter mouseleave');
         $(".list-group-item .list-item-control").css("visibility", "visible")
     } else {
         $("#statistics").css("display", "")
+        $("#nav-bar-hamburger").css("display", "none")
+        $("#navbarNav").removeClass("show")
         $(".list-group-item .list-item-control").css("visibility", "hidden")
         $(".list-group-item").off('mouseenter mouseleave');
         $(".list-group-item").hover(function () {
@@ -282,10 +285,13 @@ function initDisplayListeners() {
     window.addEventListener("resize", function (event) {
         if (window.innerWidth < 768) {
             $("#statistics").css("display", "none")
+            $("#nav-bar-hamburger").css("display", "")
             $(".list-group-item").off('mouseenter mouseleave');
             $(".list-group-item .list-item-control").css("visibility", "visible")
         } else {
             $("#statistics").css("display", "")
+            $("#nav-bar-hamburger").css("display", "none")
+            $("#navbarNav").removeClass("show")
             $(".list-group-item .list-item-control").css("visibility", "hidden")
             $(".list-group-item").off('mouseenter mouseleave');
             $(".list-group-item").hover(function () {
