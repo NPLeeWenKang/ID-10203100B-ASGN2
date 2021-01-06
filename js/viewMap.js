@@ -106,7 +106,7 @@ function getDistanceFromLatLonInKm(mk1, mk2) {
 function deg2rad(deg) {
     return deg * (Math.PI / 180)
 }
-function resetButton(div, pathHistory, lineList, markerList) {
+function backButton(div) {
     const button = document.createElement("div");
     button.style.display = "flex";
     button.style.justifyContent = "center";
@@ -122,7 +122,7 @@ function resetButton(div, pathHistory, lineList, markerList) {
     div.appendChild(button);
     // Set CSS for the control interior.
     const icon = document.createElement("img");
-    icon.src = "src/arrow-counterclockwise.svg"
+    icon.src = "src/arrow-left-short.svg"
     icon.style.display = "inline";
     button.appendChild(icon)
 
@@ -132,29 +132,13 @@ function resetButton(div, pathHistory, lineList, markerList) {
     text.style.fontFamily = "Roboto,Arial,sans-serif";
     text.style.fontSize = "15px";
     text.style.lineHeight = "38px";
-    text.style.paddingLeft = "5px";
     text.style.paddingRight = "5px";
-    text.innerHTML = "Reset";
+    text.innerHTML = "Back";
     button.appendChild(text);
     button.addEventListener("click", function () {
-        markerList.forEach(element => {
-            element.setMap(null);
-        });
-        pathHistory[0].setMap(null);
-        markerList.splice(0, markerList.length)
-        lineList.splice(0, lineList.length)
-        pathHistory.splice(0, pathHistory.length)
-        $(".distanceDisplay ").text(`Total Distance: `)
-        $("#metric").removeClass("is-invalid").removeClass("is-valid")
-        $("#imperial").removeClass("is-invalid").removeClass("is-valid")
-        $("#metric").val("")
-        $("#imperial").val("")
-        $("#pathName").removeClass("is-invalid").removeClass("is-valid")
-        $("#pathName").val("")
-        //console.log(markerList)
-        //console.log(pathHistory)
-        //console.log("ok");
+        window.location.href = "index.html"
     })
+
 }
 
 function submitButton(div) {
@@ -304,9 +288,9 @@ function initMap() {
 
     setMap(map, lineList, markerList)
 
-    const resetDiv = document.createElement("div");
-    resetButton(resetDiv, pathHistory, lineList, markerList);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(resetDiv);
+    const backDiv = document.createElement("div");
+    backButton(backDiv);
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(backDiv);
 
     const submitDiv = document.createElement("div");
     submitButton(submitDiv);

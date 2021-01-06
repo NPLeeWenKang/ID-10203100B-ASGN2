@@ -44,6 +44,54 @@
                 <h5>8-day forecast</h5>
 
             </div>
+            <table class="table table-bordered caption-top">
+                <caption>User statistics</caption>
+                <tbody>
+                    <tr>
+                        <td>Average running time</td>
+                        <td>1hr 30min</td>
+                    </tr>
+                    <tr>
+                        <td>Total distance travelled</td>
+                        <td id="total-dist">100km</td>
+                    </tr>
+                    <tr>
+                        <td>Total time spent running</td>
+                        <td>100hr</td>
+                    </tr>
+                </tbody>
+
+            </table>
+            <div>
+                <div style="max-width: 400px; margin: auto;" class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-container="body"
+                            data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Account age">
+                            <img style="pointer-events: none;" src="src/medal-1.png" width="30px" alt="" srcset="">
+                        </button>
+                    </div>
+                    <div>
+                        <button id="highest-dist" type="button" class="btn btn-secondary" data-bs-container="body"
+                            data-bs-toggle="popover" data-bs-placement="bottom"
+                            data-bs-content="Longest distance ran: 0">
+                            <img style="pointer-events: none;" src="src/runner.png" width="30px" alt="" srcset="">
+                        </button>
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-container="body"
+                            data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Fastest run">
+                            <img style="pointer-events: none;" src="src/stopwatch.png" width="30px" alt="" srcset="">
+                        </button>
+                    </div>
+                    <div>
+                        <button id="amt-runs" type="button" class="btn btn-secondary" data-bs-container="body"
+                            data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Number of runs: 0">
+                            <img style="pointer-events: none;" src="src/number-count.png" width="30px" alt="" srcset="">
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     </div>
@@ -60,5 +108,14 @@
     crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="js/statistic.js"></script>
+<script type="text/javascript">
+    $(function () {
+        $('[data-bs-toggle="popover"]').popover(
+            {
+                trigger: 'hover focus'
+            }
+        )
+    })
+</script>
 
 </html>

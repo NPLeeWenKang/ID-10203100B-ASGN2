@@ -21,12 +21,19 @@ html, body {
     padding-bottom: 5px;
 }
 input.time{
-    width: 2rem;
+    width: 5rem;
     text-align: center;
+    display: inline;
+    margin-right: 2px;
 }
 input.distanceDisplayModal{
     display: inline;
     width: 10rem;
+}
+legend{
+    font-size: 1rem;
+    cursor: default;
+    display: inline;
 }
 
 @media (max-width: 600px){

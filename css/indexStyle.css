@@ -91,6 +91,9 @@
     width: 75px;
     height: 75px;
 }
+.popover {
+    max-width: none;
+}
 @media (max-width:768px){
     #statistics{
         min-height: 100vh !important;

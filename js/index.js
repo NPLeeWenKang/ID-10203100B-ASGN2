@@ -1,30 +1,40 @@
 function checkDistance(distance) {
-    distanceInKm = (distance).toFixed(2)
+    distanceInKm = (distance).toFixed(2);
     if (distanceInKm >= 1) {
         distanceInMile = (distance / 1.609).toFixed(2);
-        return `${distanceInKm} km (${distanceInMile} mi)`
+        return `${distanceInKm} km (${distanceInMile} mi)`;
 
     } else {
         distanceInM = (distance * 1000).toFixed(2);
         distanceinFt = (distance * 3281).toFixed(2);
-        return `${distanceInM} m (${distanceinFt} ft)`
+        return `${distanceInM} m (${distanceinFt} ft)`;
+    }
+}
+function convertSecondsTo_Hr_Min_Sec(time) {
+    var timeHr = Math.floor(time / 60 / 60)
+    time -= timeHr * 60 * 60
+    var timeMin = Math.floor(time / 60)
+    time -= timeMin * 60
+    var timeSec = time
+    return {
+        timeHr: timeHr,
+        timeMin: timeMin,
+        timeSec: timeSec,
     }
 }
 function loadList() {
-    console.log("loading")
-    let stateString = localStorage.getItem("state")
-    let state = JSON.parse(stateString)
-    const listDOM = document.getElementById("listDOM")
+    console.log("loading");
+    let stateString = localStorage.getItem("state");
+    let state = JSON.parse(stateString);
+    console.log(state)
+    const listDOM = document.getElementById("listDOM");
     listDOM.innerHTML = "" //Clears  all children nodes
     for (const [key, value] of Object.entries(state)) {
-        createListElement(listDOM, value, key)
+        createListElement(listDOM, value, key);
     }
 }
-function loadDateListNode(dateData) {
-
-}
 function loadChart(dateData, tempData) {
-    const ctx = document.getElementById("myChart")
+    const ctx = document.getElementById("myChart");
     var month = new Array();
     month[0] = "Jan";
     month[1] = "Feb";
@@ -91,157 +101,165 @@ function loadChart(dateData, tempData) {
     });
 }
 function createListElement(listDOM, indiviualElement, key) {
-    const card = document.createElement("li")
-    card.className = "list-group-item"
-    card.id = key
+    const card = document.createElement("li");
+    card.className = "list-group-item";
+    card.id = key;
 
-    const nameDiv = document.createElement("div")
-    nameDiv.innerHTML = indiviualElement.name
+    const nameDiv = document.createElement("div");
+    nameDiv.innerHTML = indiviualElement.name;
 
-    const distanceDiv = document.createElement("div")
-    distanceDiv.innerHTML = "Distance: " + checkDistance(parseFloat(indiviualElement.distance))
+    const distanceDiv = document.createElement("div");
+    distanceDiv.innerHTML = "Distance: " + checkDistance(parseFloat(indiviualElement.distance));
 
-    const runningDate = new Date(parseInt(key))
-    const dateDiv = document.createElement("div")
+    const timeTakenDiv = document.createElement("div");
+    if (indiviualElement.timeInSec > 0) {
+        const time = convertSecondsTo_Hr_Min_Sec(indiviualElement.timeInSec)
+        const speed = ((parseFloat(indiviualElement.distance) / indiviualElement.timeInSec) * 60 * 60).toFixed(2)
+        timeTakenDiv.innerHTML = `Time taken: ${time.timeHr}hr ${time.timeMin}min ${time.timeSec}s (${speed}km/h)`;
+    } else {
+        timeTakenDiv.innerHTML = "Time taken: N/A";
+    }
+
+
+    const runningDate = new Date(parseInt(key));
+    const dateDiv = document.createElement("div");
     dateDiv.style.color = "#b0b0b0";
     dateDiv.style.fontSize = "11px";
-    dateDiv.innerHTML = `${runningDate.getDate()}/${runningDate.getMonth()}/${runningDate.getFullYear()}`
+    dateDiv.innerHTML = `${runningDate.getDate()}/${runningDate.getMonth() + 1}/${runningDate.getFullYear()}`;
 
-    const controlDiv = document.createElement("div")
-    controlDiv.classList.add("list-item-control")
-    const viewIcon = document.createElement("img")
-    viewIcon.src = "src/map.svg"
-    const viewText = document.createElement("p")
-    viewText.innerHTML = "View"
-    viewText.style.margin = "0"
-    const viewBtn = document.createElement("button")
-    viewBtn.type = "button"
-    viewBtn.classList.add("btn")
-    viewBtn.classList.add("btn-primary")
-    viewBtn.id = key
-    viewBtn.appendChild(viewIcon)
-    viewBtn.appendChild(viewText)
+    const controlDiv = document.createElement("div");
+    controlDiv.classList.add("list-item-control");
+    const viewIcon = document.createElement("img");
+    viewIcon.src = "src/map.svg";
+    const viewText = document.createElement("p");
+    viewText.innerHTML = "View";
+    viewText.style.margin = "0";
+    const viewBtn = document.createElement("button");
+    viewBtn.type = "button";
+    viewBtn.classList.add("btn");
+    viewBtn.classList.add("btn-primary");
+    viewBtn.id = key;
+    viewBtn.appendChild(viewIcon);
+    viewBtn.appendChild(viewText);
 
-    const deleteIcon = document.createElement("img")
-    deleteIcon.src = "src/trash.svg"
-    const deleteText = document.createElement("p")
-    deleteText.innerHTML = "Delete"
-    deleteText.style.margin = "0"
-    const deleteBtn = document.createElement("button")
-    deleteBtn.type = "button"
-    deleteBtn.classList.add("btn")
-    deleteBtn.classList.add("btn-primary")
-    deleteBtn.id = key
-    deleteBtn.appendChild(deleteIcon)
-    deleteBtn.appendChild(deleteText)
+    const deleteIcon = document.createElement("img");
+    deleteIcon.src = "src/trash.svg";
+    const deleteText = document.createElement("p");
+    deleteText.innerHTML = "Delete";
+    deleteText.style.margin = "0";
+    const deleteBtn = document.createElement("button");
+    deleteBtn.type = "button";
+    deleteBtn.classList.add("btn");
+    deleteBtn.classList.add("btn-primary");
+    deleteBtn.id = key;
+    deleteBtn.appendChild(deleteIcon);
+    deleteBtn.appendChild(deleteText);
 
-    controlDiv.appendChild(viewBtn)
-    controlDiv.appendChild(deleteBtn)
+    controlDiv.appendChild(viewBtn);
+    controlDiv.appendChild(deleteBtn);
 
     viewBtn.addEventListener("click", function (event) {
-        window.location.href = `viewMap.html?key=${this.id}`
+        window.location.href = `viewMap.html?key=${this.id}`;
     })
 
     deleteBtn.addEventListener("click", function (event) {
-        console.log("Delete")
-        const state = JSON.parse(localStorage.getItem("state"))
-        delete state[`${this.id}`]
-        localStorage.setItem("state", JSON.stringify(state))
-        loadList()
+        console.log("Delete");
+        const state = JSON.parse(localStorage.getItem("state"));
+        delete state[`${this.id}`];
+        localStorage.setItem("state", JSON.stringify(state));
+        loadList();
     })
 
-    card.appendChild(nameDiv)
-    card.appendChild(distanceDiv)
-    card.appendChild(dateDiv)
-    card.appendChild(controlDiv)
-    listDOM.appendChild(card)
+    card.appendChild(nameDiv);
+    card.appendChild(distanceDiv);
+    card.appendChild(timeTakenDiv);
+    card.appendChild(dateDiv);
+    card.appendChild(controlDiv);
+    listDOM.appendChild(card);
 }
-const mapButton = document.getElementById("button-to-map")
+const mapButton = document.getElementById("button-to-map");
 mapButton.addEventListener("click", function () {
-    window.location.href = "map.html"
+    window.location.href = "map.html";
 })
 function createDateString_DMY(date) {
     var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-    const myDate = new Date(date * 1000)
-    return `${myDate.getDate()} ${month[myDate.getMonth()]} ${myDate.getFullYear()}`
+    const myDate = new Date(date * 1000);
+    return `${myDate.getDate()} ${month[myDate.getMonth()]} ${myDate.getFullYear()}`;
 }
 function createDateString_DMD(date) {
+
     var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
-    var day = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-    const myDate = new Date(date * 1000)
-    return `${day[myDate.getDay()]}, ${month[myDate.getMonth()]} ${myDate.getDate()}`
+    var day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const myDate = new Date(date * 1000);
+    return `${day[myDate.getDay()]}, ${month[myDate.getMonth()]} ${myDate.getDate()}`;
 }
 function createDailyListNode(dailyForecast, data) {
-    const parentDiv = document.createElement("div")
-    parentDiv.className = "row g-0 d-flex align-items-center"
-    const dateDiv = document.createElement("div")
-    dateDiv.className = "dateDiv col-4 col-md-4"
-    dateDiv.innerHTML = createDateString_DMD(data.dt)
+    const parentDiv = document.createElement("div");
+    parentDiv.className = "row g-0 d-flex align-items-center";
+    const dateDiv = document.createElement("div");
+    dateDiv.className = "dateDiv col-4 col-md-4";
+    dateDiv.innerHTML = createDateString_DMD(data.dt);
 
 
-    const secondDiv = document.createElement("div")
-    secondDiv.className = "col-8 col-md-8 d-flex justify-content-between align-items-center"
+    const secondDiv = document.createElement("div");
+    secondDiv.className = "col-8 col-md-8 d-flex justify-content-between align-items-center";
 
-    const iconPlusTemp = document.createElement("span")
-    iconPlusTemp.className = "iconPlusTemp d-flex justify-content-between align-items-center"
-    iconPlusTemp.style.marginRight = "5px"
-    const img = document.createElement("img")
-    img.src = "http://openweathermap.org/img/wn/" + `${data.weather[0].icon}@2x.png`
-    img.style.width = "30px"
-    img.style.height = "30px"
-    iconPlusTemp.appendChild(img)
-    const tempText = document.createElement("span")
-    tempText.style.fontSize = "13px"
-    tempText.innerHTML = `${Math.floor(data.temp.max)} / ${Math.floor(data.temp.min)}\u00B0C`
-    iconPlusTemp.appendChild(tempText)
-    secondDiv.appendChild(iconPlusTemp)
-
-
-    const weatherText = document.createElement("span")
-    weatherText.className = "weatherText"
-    weatherText.innerHTML = data.weather[0].description
-    weatherText.style.fontSize = "12px"
-    secondDiv.appendChild(weatherText)
+    const iconPlusTemp = document.createElement("span");
+    iconPlusTemp.className = "iconPlusTemp d-flex justify-content-between align-items-center";
+    iconPlusTemp.style.marginRight = "5px";
+    const img = document.createElement("img");
+    img.src = "http://openweathermap.org/img/wn/" + `${data.weather[0].icon}@2x.png`;
+    img.style.width = "30px";
+    img.style.height = "30px";
+    iconPlusTemp.appendChild(img);
+    const tempText = document.createElement("span");
+    tempText.style.fontSize = "13px";
+    tempText.innerHTML = `${Math.floor(data.temp.max)} / ${Math.floor(data.temp.min)}\u00B0C`;
+    iconPlusTemp.appendChild(tempText);
+    secondDiv.appendChild(iconPlusTemp);
 
 
+    const weatherText = document.createElement("span");
+    weatherText.className = "weatherText";
+    weatherText.innerHTML = data.weather[0].description;
+    weatherText.style.fontSize = "12px";
+    secondDiv.appendChild(weatherText);
 
-    parentDiv.appendChild(dateDiv)
-    parentDiv.appendChild(secondDiv)
 
-    dailyForecast.appendChild(parentDiv)
+    parentDiv.appendChild(dateDiv);
+    parentDiv.appendChild(secondDiv);
+
+    dailyForecast.appendChild(parentDiv);
 }
 function initHourly(weatherResult) {
-    const tempData = []
-    const dateData = []
+    const tempData = [];
+    const dateData = [];
     for (var i = 0; i <= 12; i++) {
-        const element = weatherResult.hourly[i]
-        tempData.push(element.temp)
-        const date = new Date(element.dt * 1000)
+        const element = weatherResult.hourly[i];
+        tempData.push(element.temp);
+        const date = new Date(element.dt * 1000);
         if (date.getHours() > 12) {
-            dateData.push(`${date.getHours() - 12} pm`)
+            dateData.push(`${date.getHours() - 12} pm`);
         } else {
             if (date.getHours() == 0) {
-                dateData.push(`12 am`)
+                dateData.push(`12 am`);
             } else {
-                dateData.push(`${date.getHours()} am`)
+                dateData.push(`${date.getHours()} am`);
             }
         }
 
     }
-    loadChart(dateData, tempData)
+    loadChart(dateData, tempData);
 }
 function initDaily(weatherResult) {
-    const data = []
-    const dailyForecast = document.getElementById("daily-forecast")
+    const dailyForecast = document.getElementById("daily-forecast");
+    $("#daily-forecast h5").append(`<span> ${weatherResult.timezone}</span>`)
+    $("#daily-forecast span").css("fontSize", "14px")
+    $("#daily-forecast span").css("color", "#b0b0b0")
     for (var i = 0; i <= 7; i++) {
-        const element = weatherResult.daily[i]
-        data.push(element)
-        createDailyListNode(dailyForecast, element)
+        const element = weatherResult.daily[i];
+        createDailyListNode(dailyForecast, element);
     }
-
-
-
-
 
 }
 $.ajax({
@@ -254,62 +272,82 @@ $.ajax({
     $.ajax({
         url: `https://api.openweathermap.org/data/2.5/onecall?lat=${ipResult.latitude}&lon=${ipResult.longitude}&appid=eea225520939f59f9dcd0ea6046d512b&exclude=current,minutely,alerts&units=metric`
     }).done(function (weatherResult) {
-        console.log(weatherResult)
-        initHourly(weatherResult)
-        initDaily(weatherResult)
+        console.log(weatherResult);
+        initHourly(weatherResult);
+        initDaily(weatherResult);
     })
 })
 
 function initDisplayListeners() {
     if (window.innerWidth < 768) {
-        $("#statistics").css("display", "none")
-        $("#nav-bar-hamburger").css("display", "")
+        $("#statistics").css("display", "none");
+        $("#nav-bar-hamburger").css("display", "");
         $(".list-group-item").off('mouseenter mouseleave');
-        $(".list-group-item .list-item-control").css("visibility", "visible")
+        $(".list-group-item .list-item-control").css("visibility", "visible");
     } else {
-        $("#statistics").css("display", "")
-        $("#nav-bar-hamburger").css("display", "none")
-        $("#navbarNav").removeClass("show")
-        $(".list-group-item .list-item-control").css("visibility", "hidden")
+        $("#statistics").css("display", "");
+        $("#nav-bar-hamburger").css("display", "none");
+        $("#navbarNav").removeClass("show");
+        $(".list-group-item .list-item-control").css("visibility", "hidden");
         $(".list-group-item").off('mouseenter mouseleave');
         $(".list-group-item").hover(function () {
-            console.log("ok")
             if ($(".list-item-control", this).css("visibility") == "visible") {
-                $(".list-item-control", this).css("visibility", "hidden")
+                $(".list-item-control", this).css("visibility", "hidden");
             } else {
-                $(".list-item-control", this).css("visibility", "visible")
+                $(".list-item-control", this).css("visibility", "visible");
             }
 
         })
     }
     window.addEventListener("resize", function (event) {
         if (window.innerWidth < 768) {
-            $("#statistics").css("display", "none")
-            $("#nav-bar-hamburger").css("display", "")
+            $("#statistics").css("display", "none");
+            $("#nav-bar-hamburger").css("display", "");
             $(".list-group-item").off('mouseenter mouseleave');
-            $(".list-group-item .list-item-control").css("visibility", "visible")
+            $(".list-group-item .list-item-control").css("visibility", "visible");
         } else {
-            $("#statistics").css("display", "")
-            $("#nav-bar-hamburger").css("display", "none")
-            $("#navbarNav").removeClass("show")
-            $(".list-group-item .list-item-control").css("visibility", "hidden")
+            $("#statistics").css("display", "");
+            $("#nav-bar-hamburger").css("display", "none");
+            $("#navbarNav").removeClass("show");
+            $(".list-group-item .list-item-control").css("visibility", "hidden");
             $(".list-group-item").off('mouseenter mouseleave');
             $(".list-group-item").hover(function () {
-                console.log("ok")
                 if ($(".list-item-control", this).css("visibility") == "visible") {
-                    $(".list-item-control", this).css("visibility", "hidden")
+                    $(".list-item-control", this).css("visibility", "hidden");
                 } else {
-                    $(".list-item-control", this).css("visibility", "visible")
+                    $(".list-item-control", this).css("visibility", "visible");
                 }
 
             })
         }
     })
 }
+function findTotalDist(distanceList) {
+    var total_dist = 0;
+    distanceList.forEach(dist => {
+        total_dist += dist;
+    });
+    return total_dist;
+}
+function loadBadgesAndStats() {
+    console.log("loading");
+    let stateString = localStorage.getItem("state");
+    let state = JSON.parse(stateString);
+    const distanceList = []
+    const timeList = []
+    for (const [key, value] of Object.entries(state)) {
+        distanceList.push(parseFloat(value.distance))
+    }
+    $("#highest-dist").attr("data-bs-content", `Longest distance ran: ${Math.max.apply(null, distanceList).toFixed(2)} km (${(Math.max.apply(null, distanceList) / 1.609).toFixed(2)} mi)`)
+    console.log(Math.max.apply(null, distanceList))
+    $("#amt-runs").attr("data-bs-content", `Number of runs: ${distanceList.length}`)
+    console.log(distanceList.length);
 
-
+    $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}`)
+}
 
 window.onload = () => {
-    loadList()
-    initDisplayListeners()
+    loadList();
+    initDisplayListeners();
+    loadBadgesAndStats();
 }

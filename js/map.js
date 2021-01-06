@@ -58,12 +58,75 @@ function initListeners(pathHistory, lineList, markerList) {
             $("#pathName").addClass("is-invalid").removeClass("is-valid")
             passed = passed && false
         }
+        // Check if hr is valid (is integer)
+        if ($("#hr").val() != "") {
+            if (!isNaN(parseInt($("#hr").val()))) {
+                $("#hr").addClass("is-valid").removeClass("is-invalid")
+                $("#hr").val(parseInt($("#hr").val()))
+                passed = passed && true
+            } else {
+                $("#hr").addClass("is-invalid").removeClass("is-valid")
+                passed = passed && false
+            }
+        } else {
+            $("#hr").removeClass("is-invalid").removeClass("is-valid")
+            passed = passed && true
+        }
+
+        // Check if min is valid (is integer)
+        if ($("#min").val() != "") {
+            if (!isNaN(parseInt($("#min").val()))) {
+                $("#min").addClass("is-valid").removeClass("is-invalid")
+                $("#min").val(parseInt($("#min").val()))
+                passed = passed && true
+            } else {
+                $("#min").addClass("is-invalid").removeClass("is-valid")
+                passed = passed && false
+            }
+        } else {
+            $("#min").removeClass("is-invalid").removeClass("is-valid")
+            passed = passed && true
+        }
+
+        // Check if sec is valid (is integer)
+        if ($("#sec").val() != "") {
+            if (!isNaN(parseInt($("#sec").val()))) {
+                $("#sec").addClass("is-valid").removeClass("is-invalid")
+                $("#sec").val(parseInt($("#sec").val()))
+                passed = passed && true
+            } else {
+                $("#sec").addClass("is-invalid").removeClass("is-valid")
+                passed = passed && false
+            }
+        } else {
+            $("#sec").removeClass("is-invalid").removeClass("is-valid")
+            passed = passed && true
+        }
+
         if (passed) {
+            if ($("#hr").val() == "") {
+                var timeHr = 0
+            } else {
+                var timeHr = parseInt($("#hr").val()) * 60 * 60
+            }
+            if ($("#min").val() == "") {
+                var timeMin = 0
+            } else {
+                var timeMin = parseInt($("#min").val()) * 60
+            }
+            if ($("#sec").val() == "") {
+                var timeSec = 0
+            } else {
+                var timeSec = parseInt($("#sec").val())
+            }
+
+            let totalTime = timeHr + timeMin + timeSec
             let originalState = localStorage.getItem("state");
             let arr = {
                 name: $("#pathName").val(),
                 distance: $("#distance").attr("distance"),
                 lineList: lineList,
+                timeInSec: totalTime,
             }
             let newState = {
                 [`${Date.now()}`]: arr,
