@@ -23,10 +23,8 @@ function convertSecondsTo_Hr_Min_Sec(time) {
     }
 }
 function loadList() {
-    console.log("loading");
     let stateString = localStorage.getItem("state");
     let state = JSON.parse(stateString);
-    console.log(state)
     const listDOM = document.getElementById("listDOM");
     listDOM.innerHTML = "" //Clears  all children nodes
     for (const [key, value] of Object.entries(state)) {
@@ -100,6 +98,7 @@ function loadChart(dateData, tempData) {
         }
     });
 }
+
 function createListElement(listDOM, indiviualElement, key) {
     const card = document.createElement("li");
     card.className = "list-group-item";
@@ -137,23 +136,30 @@ function createListElement(listDOM, indiviualElement, key) {
     const viewBtn = document.createElement("button");
     viewBtn.type = "button";
     viewBtn.classList.add("btn");
-    viewBtn.classList.add("btn-primary");
+    viewBtn.classList.add("btn-light");
     viewBtn.id = key;
     viewBtn.appendChild(viewIcon);
     viewBtn.appendChild(viewText);
 
     const deleteIcon = document.createElement("img");
-    deleteIcon.src = "src/trash.svg";
+    deleteIcon.src = "src/binoculars-fill.svg";
     const deleteText = document.createElement("p");
-    deleteText.innerHTML = "Delete";
+    deleteText.innerHTML = "Edit";
     deleteText.style.margin = "0";
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
     deleteBtn.classList.add("btn");
-    deleteBtn.classList.add("btn-primary");
+    deleteBtn.classList.add("btn-secondary");
     deleteBtn.id = key;
     deleteBtn.appendChild(deleteIcon);
     deleteBtn.appendChild(deleteText);
+
+    const attribute1 = document.createAttribute("data-bs-toggle");
+    attribute1.value = "modal"
+    const attribute2 = document.createAttribute("data-bs-target");
+    attribute2.value = "#staticBackdrop"
+    deleteBtn.setAttributeNode(attribute1);
+    deleteBtn.setAttributeNode(attribute2);
 
     controlDiv.appendChild(viewBtn);
     controlDiv.appendChild(deleteBtn);
@@ -162,13 +168,6 @@ function createListElement(listDOM, indiviualElement, key) {
         window.location.href = `viewMap.html?key=${this.id}`;
     })
 
-    deleteBtn.addEventListener("click", function (event) {
-        console.log("Delete");
-        const state = JSON.parse(localStorage.getItem("state"));
-        delete state[`${this.id}`];
-        localStorage.setItem("state", JSON.stringify(state));
-        loadList();
-    })
 
     card.appendChild(nameDiv);
     card.appendChild(distanceDiv);
@@ -330,11 +329,9 @@ function findTotalDist(distanceList) {
     return total_dist;
 }
 function loadBadgesAndStats() {
-    console.log("loading");
     let stateString = localStorage.getItem("state");
     let state = JSON.parse(stateString);
     const distanceList = []
-    const timeList = []
     for (const [key, value] of Object.entries(state)) {
         distanceList.push(parseFloat(value.distance))
     }
@@ -345,9 +342,33 @@ function loadBadgesAndStats() {
 
     $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}`)
 }
+function initModalListener() {
+    let stateString = localStorage.getItem("state");
+    let state = JSON.parse(stateString);
+    const editButton = document.getElementsByClassName("list-group-item");
+    for (var i = 0; i < editButton.length; i++) {
+        editButton[i].addEventListener("click", function () {
+            $("#distance").val(state[this.id].distance)
+            $("#name").val(state[this.id].name)
+            $("#time").val(state[this.id].timeInSec)
+            $("#delete").attr("key", this.id)
+        })
+    }
+
+    const deleteButton = document.getElementById("delete");
+    deleteButton.addEventListener("click", function () {
+        const key = this.getAttribute("key")
+        const state = JSON.parse(localStorage.getItem("state"));
+        delete state[`${key}`];
+        localStorage.setItem("state", JSON.stringify(state));
+        loadList();
+        loadBadgesAndStats();
+    })
+}
 
 window.onload = () => {
     loadList();
+    initModalListener();
     initDisplayListeners();
     loadBadgesAndStats();
 }

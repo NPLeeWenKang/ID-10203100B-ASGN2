@@ -124,7 +124,54 @@
         </div>
     </div>
 
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form class="modal-content" autocomplete="off">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Run Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="text" class="form-control distanceDisplayModal" id="distance" readonly>
+                    <div>
+                        <label for="pathName">Name: <span class="text-danger">*required</span></label>
+                        <input type="text" id="name" class="form-control">
+                        <div class="valid-feedback">
+                            Looks good!
+                        </div>
+                        <div class="invalid-feedback">
+                            Please choose a name.
+                        </div>
+                    </div>
 
+                    <fieldset style="padding-bottom: 5px;">
+                        <legend>Your time:</legend>
+                        <input id="hr" class="time form-control" type="text" maxlength="2">
+                        <span>hr</span>
+                        <input id="min" class="time form-control" type="text" maxlength="2">
+                        <span>min</span>
+                        <input id="sec" class="time form-control" type="text" maxlength="2">
+                        <span>s</span>
+                        <div class="invalid-feedback">
+                            Please input an integer.
+                        </div>
+                    </fieldset>
+
+                </div>
+                <div class="modal-footer d-flex justify-content-between">
+                    <div>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Back</button>
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" id="delete">Delete</button>
+                        <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </div>
 
 </body>
 

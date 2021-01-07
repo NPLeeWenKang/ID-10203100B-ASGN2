@@ -400,14 +400,7 @@ function setCenterMap(map) {
 function gm_authFailure(err) {
     console.log(window.google.maps.disabled)
 };
-const callback = (results, status) => {
-    console.log(status)
-    if (status === 'OK') {
-        console.log(results);
-    } else {
-        // handle this case
-    }
-};
+
 function initMap() {
     const myLatlng = { lat: 0, lng: 0 };
     const markerList = []

@@ -94,6 +94,24 @@
 .popover {
     max-width: none;
 }
+.modal-body div {
+    padding-bottom: 5px;
+}
+input.time{
+    width: 5rem;
+    text-align: center;
+    display: inline;
+    margin-right: 2px;
+}
+input.distanceDisplayModal{
+    display: inline;
+}
+legend{
+    font-size: 1rem;
+    cursor: default;
+    display: inline;
+}
+
 @media (max-width:768px){
     #statistics{
         min-height: 100vh !important;
