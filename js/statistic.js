@@ -259,16 +259,14 @@ window.onload = () => {
     loadBadgesAndStats();
 }
 var firebaseConfig = {
-    apiKey: "AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI",
-    authDomain: "wired-apex-298001.firebaseapp.com",
-    databaseURL: "https://wired-apex-298001-default-rtdb.firebaseio.com",
-    projectId: "wired-apex-298001",
-    storageBucket: "wired-apex-298001.appspot.com",
-    messagingSenderId: "474498507020",
-    appId: "1:474498507020:web:b517e6139a985f82832929",
-    measurementId: "G-0FBKY5Y04J"
+    apiKey: "AIzaSyDH03bcj0upYdfOpz6ENZeB0lNiKWAiXBE",
+    authDomain: "idassign2.firebaseapp.com",
+    projectId: "idassign2",
+    storageBucket: "idassign2.appspot.com",
+    messagingSenderId: "994984281517",
+    appId: "1:994984281517:web:2845ebc0007c29563f8d24"
 };
-
+// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 firebase.auth().onAuthStateChanged(((user) => {
     if (!user) {
