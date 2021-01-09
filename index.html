@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">
@@ -29,15 +30,24 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Home</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" id="weather-link">
                         <a class="nav-link" href="statistic.html">Weather and Statistics</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                            onclick="firebase.auth().signOut(); $('#row-wrapper').css('display', 'none');">Sign Out</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
+    <!-- (END) Navigation Bar -->
     <div id="container">
-        <div class="row g-0">
+        <div id="loading">
+            <div class="spinner-border text-primary" role="status">
+            </div>
+        </div>
+        <div class="row g-0" id="row-wrapper" style="display: none;">
             <div class="col-12 col-md-7" id="leftColumn">
                 <div class="card">
                     <div class="card-header">
@@ -68,20 +78,20 @@
                     <h5>8-day forecast</h5>
 
                 </div>
-                <table class="table table-bordered caption-top">
+                <table class="table table-bordered caption-top statistic">
                     <caption>User statistics</caption>
                     <tbody>
                         <tr>
                             <td>Average running time</td>
-                            <td>1hr 30min</td>
+                            <td id="avg-run-time">N/A</td>
                         </tr>
                         <tr>
                             <td>Total distance travelled</td>
-                            <td id="total-dist">100km</td>
+                            <td id="total-dist">N/A</td>
                         </tr>
                         <tr>
                             <td>Total time spent running</td>
-                            <td>100hr</td>
+                            <td id="total-run-time">N/A</td>
                         </tr>
                     </tbody>
 
@@ -104,7 +114,7 @@
                             </button>
                         </div>
                         <div>
-                            <button type="button" class="btn btn-secondary" data-bs-container="body"
+                            <button id="fastest-run" type="button" class="btn btn-secondary" data-bs-container="body"
                                 data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Fastest run">
                                 <img style="pointer-events: none;" src="src/stopwatch.png" width="30px" alt=""
                                     srcset="">
@@ -130,6 +140,11 @@
             <form class="modal-content" autocomplete="off">
                 <div class="modal-header">
                     <h5 class="modal-title" id="staticBackdropLabel">Run Details</h5>
+                    <button type="submit" class="btn btn-info d-flex justify-content-center align-items-center"
+                        data-bs-dismiss="modal" style="padding:5px; margin-left: 10px;" id="view">
+                        <img src="src/map.svg" alt="map" style="padding-right: 5px;">
+                        <div>View</div>
+                    </button>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -165,16 +180,31 @@
                     </div>
                     <div>
                         <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" id="delete">Delete</button>
-                        <button type="submit" class="btn btn-primary" id="saveButton">Save</button>
+                        <button type="submit" class="btn btn-primary" id="save">Save</button>
                     </div>
 
                 </div>
             </form>
         </div>
     </div>
-
+    <div class="modal fade" id="login-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <form class="modal-content" autocomplete="off">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Login</h5>
+                </div>
+                <div class="modal-body d-flex justify-content-center align-items-center">
+                    <img id="login" src="src/btn_google_signin_dark_normal_web@2x.png" alt=""
+                        style="width: 100%; max-width: 266px;">
+                </div>
+            </form>
+        </div>
+    </div>
 </body>
-
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-database.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"
     integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw=="
     crossorigin="anonymous"></script>

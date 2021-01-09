@@ -133,8 +133,9 @@ function initListeners(pathHistory, lineList, markerList) {
                 ...JSON.parse(originalState),
 
             }
-            localStorage.setItem('state', JSON.stringify(newState))
-            window.location.href = "index.html"
+            setUserData(newState)
+            // localStorage.setItem('state', JSON.stringify(newState))
+            // window.location.href = "index.html"
         }
         // if ($("#pathName").val().length >= 1) {
         //     $("#pathName").addClass("is-valid").removeClass("is-invalid")
@@ -482,3 +483,37 @@ function initMap() {
     })
 
 }
+
+function setUserData(newState) {
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('users/' + user.uid).set({
+        state: newState
+    }, (error) => {
+        if (error) {
+            console.alert(error);
+        } else {
+            window.location.href = "index.html"
+        }
+    });
+
+}
+
+var firebaseConfig = {
+    apiKey: "AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI",
+    authDomain: "wired-apex-298001.firebaseapp.com",
+    databaseURL: "https://wired-apex-298001-default-rtdb.firebaseio.com",
+    projectId: "wired-apex-298001",
+    storageBucket: "wired-apex-298001.appspot.com",
+    messagingSenderId: "474498507020",
+    appId: "1:474498507020:web:b517e6139a985f82832929",
+    measurementId: "G-0FBKY5Y04J"
+};
+
+firebase.initializeApp(firebaseConfig);
+var googleProvider = new firebase.auth.GoogleAuthProvider();
+var database = firebase.database();
+firebase.auth().onAuthStateChanged(((user) => {
+    if (!user) {
+
+    }
+}))

@@ -92,6 +92,7 @@ function loadChart(dateData, tempData) {
 }
 
 
+
 function createDateString_DMY(date) {
     var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     const myDate = new Date(date * 1000);
@@ -196,21 +197,43 @@ function findTotalDist(distanceList) {
     });
     return total_dist;
 }
+function findTotalTime(timeList) {
+    var total_time = 0;
+    timeList.forEach(time => {
+        total_time += time;
+    });
+    return total_time / 60;
+}
+function findFastestSpeed(state) {
+    const speedList = [];
+    for (const [key, value] of Object.entries(state)) {
+        if (value.timeInSec != 0) {
+            speedList.push(parseFloat(value.distance) / (value.timeInSec / 60 / 60))
+        }
+    }
+    return Math.max.apply(null, speedList)
+}
 function loadBadgesAndStats() {
-    console.log("loading");
     let stateString = localStorage.getItem("state");
     let state = JSON.parse(stateString);
     const distanceList = []
     const timeList = []
     for (const [key, value] of Object.entries(state)) {
         distanceList.push(parseFloat(value.distance))
-    }
-    $("#highest-dist").attr("data-bs-content", `Longest distance ran: ${Math.max.apply(null, distanceList).toFixed(2)} km (${(Math.max.apply(null, distanceList) / 1.609).toFixed(2)} mi)`)
-    console.log(Math.max.apply(null, distanceList))
-    $("#amt-runs").attr("data-bs-content", `Number of runs: ${distanceList.length}`)
-    console.log(distanceList.length);
+        if (value.timeInSec != 0) {
+            timeList.push(parseInt(value.timeInSec))
+        }
 
-    $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}`)
+    }
+    // Badges
+    $("#highest-dist").attr("data-bs-content", `Longest distance ran: ${Math.max.apply(null, distanceList).toFixed(2)} km (${(Math.max.apply(null, distanceList) / 1.609).toFixed(2)} mi)`)
+    $("#amt-runs").attr("data-bs-content", `Number of runs: ${distanceList.length}`)
+    $("#fastest-run").attr("data-bs-content", `Fastest run ${(findFastestSpeed(state)).toFixed(2)}km/h`)
+    // Table Stats
+    console.log(timeList)
+    $("#avg-run-time").text(`${(findTotalTime(timeList) / timeList.length).toFixed(2)}min`)
+    $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}km`)
+    $("#total-run-time").text(`${(findTotalTime(timeList).toFixed(2))}km`)
 }
 
 window.onload = () => {

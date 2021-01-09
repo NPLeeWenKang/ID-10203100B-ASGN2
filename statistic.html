@@ -38,26 +38,26 @@
     <div id="container">
         <div id="statistics" class="col-12">
             <div style="height: 200px;">
-                <canvas id="myChart" style="max-width: 700px;"></canvas>
+                <canvas id="myChart" style="max-width: 700px; margin: auto;"></canvas>
             </div>
             <div id="daily-forecast">
                 <h5>8-day forecast</h5>
 
             </div>
-            <table class="table table-bordered caption-top">
+            <table class="table table-bordered caption-top user-statistic">
                 <caption>User statistics</caption>
                 <tbody>
                     <tr>
                         <td>Average running time</td>
-                        <td>1hr 30min</td>
+                        <td id="avg-run-time">N/A</td>
                     </tr>
                     <tr>
                         <td>Total distance travelled</td>
-                        <td id="total-dist">100km</td>
+                        <td id="total-dist">N/A</td>
                     </tr>
                     <tr>
                         <td>Total time spent running</td>
-                        <td>100hr</td>
+                        <td id="total-run-time">N/A</td>
                     </tr>
                 </tbody>
 
@@ -79,7 +79,7 @@
                         </button>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-secondary" data-bs-container="body"
+                        <button id="fastest-run" type="button" class="btn btn-secondary" data-bs-container="body"
                             data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Fastest run">
                             <img style="pointer-events: none;" src="src/stopwatch.png" width="30px" alt="" srcset="">
                         </button>

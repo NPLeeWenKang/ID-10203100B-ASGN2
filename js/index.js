@@ -24,12 +24,17 @@ function convertSecondsTo_Hr_Min_Sec(time) {
 }
 function loadList() {
     let stateString = localStorage.getItem("state");
-    let state = JSON.parse(stateString);
-    const listDOM = document.getElementById("listDOM");
-    listDOM.innerHTML = "" //Clears  all children nodes
-    for (const [key, value] of Object.entries(state)) {
-        createListElement(listDOM, value, key);
+    if (stateString != null) {
+        let state = JSON.parse(stateString);
+        const listDOM = document.getElementById("listDOM");
+        listDOM.innerHTML = "" //Clears  all children nodes
+        for (const [key, value] of Object.entries(state)) {
+            createListElement(listDOM, value, key);
+        }
+        editButtonListener();
     }
+
+
 }
 function loadChart(dateData, tempData) {
     const ctx = document.getElementById("myChart");
@@ -128,18 +133,6 @@ function createListElement(listDOM, indiviualElement, key) {
 
     const controlDiv = document.createElement("div");
     controlDiv.classList.add("list-item-control");
-    const viewIcon = document.createElement("img");
-    viewIcon.src = "src/map.svg";
-    const viewText = document.createElement("p");
-    viewText.innerHTML = "View";
-    viewText.style.margin = "0";
-    const viewBtn = document.createElement("button");
-    viewBtn.type = "button";
-    viewBtn.classList.add("btn");
-    viewBtn.classList.add("btn-light");
-    viewBtn.id = key;
-    viewBtn.appendChild(viewIcon);
-    viewBtn.appendChild(viewText);
 
     const deleteIcon = document.createElement("img");
     deleteIcon.src = "src/binoculars-fill.svg";
@@ -161,13 +154,7 @@ function createListElement(listDOM, indiviualElement, key) {
     deleteBtn.setAttributeNode(attribute1);
     deleteBtn.setAttributeNode(attribute2);
 
-    controlDiv.appendChild(viewBtn);
     controlDiv.appendChild(deleteBtn);
-
-    viewBtn.addEventListener("click", function (event) {
-        window.location.href = `viewMap.html?key=${this.id}`;
-    })
-
 
     card.appendChild(nameDiv);
     card.appendChild(distanceDiv);
@@ -280,13 +267,12 @@ $.ajax({
 function initDisplayListeners() {
     if (window.innerWidth < 768) {
         $("#statistics").css("display", "none");
-        $("#nav-bar-hamburger").css("display", "");
+        $("#weather-link").css("display", "");
         $(".list-group-item").off('mouseenter mouseleave');
         $(".list-group-item .list-item-control").css("visibility", "visible");
     } else {
         $("#statistics").css("display", "");
-        $("#nav-bar-hamburger").css("display", "none");
-        $("#navbarNav").removeClass("show");
+        $("#weather-link").css("display", "none");
         $(".list-group-item .list-item-control").css("visibility", "hidden");
         $(".list-group-item").off('mouseenter mouseleave');
         $(".list-group-item").hover(function () {
@@ -301,13 +287,12 @@ function initDisplayListeners() {
     window.addEventListener("resize", function (event) {
         if (window.innerWidth < 768) {
             $("#statistics").css("display", "none");
-            $("#nav-bar-hamburger").css("display", "");
+            $("#weather-link").css("display", "");
             $(".list-group-item").off('mouseenter mouseleave');
             $(".list-group-item .list-item-control").css("visibility", "visible");
         } else {
             $("#statistics").css("display", "");
-            $("#nav-bar-hamburger").css("display", "none");
-            $("#navbarNav").removeClass("show");
+            $("#weather-link").css("display", "none");
             $(".list-group-item .list-item-control").css("visibility", "hidden");
             $(".list-group-item").off('mouseenter mouseleave');
             $(".list-group-item").hover(function () {
@@ -328,47 +313,144 @@ function findTotalDist(distanceList) {
     });
     return total_dist;
 }
+function findTotalTime(timeList) {
+    var total_time = 0;
+    timeList.forEach(time => {
+        total_time += time;
+    });
+    return total_time / 60;
+}
+function findFastestSpeed(state) {
+    const speedList = [];
+    for (const [key, value] of Object.entries(state)) {
+        if (value.timeInSec != 0) {
+            speedList.push(parseFloat(value.distance) / (value.timeInSec / 60 / 60))
+        }
+    }
+    return Math.max.apply(null, speedList)
+}
 function loadBadgesAndStats() {
     let stateString = localStorage.getItem("state");
-    let state = JSON.parse(stateString);
-    const distanceList = []
-    for (const [key, value] of Object.entries(state)) {
-        distanceList.push(parseFloat(value.distance))
-    }
-    $("#highest-dist").attr("data-bs-content", `Longest distance ran: ${Math.max.apply(null, distanceList).toFixed(2)} km (${(Math.max.apply(null, distanceList) / 1.609).toFixed(2)} mi)`)
-    console.log(Math.max.apply(null, distanceList))
-    $("#amt-runs").attr("data-bs-content", `Number of runs: ${distanceList.length}`)
-    console.log(distanceList.length);
+    if (stateString != null) {
+        let state = JSON.parse(stateString);
+        const distanceList = []
+        const timeList = []
+        for (const [key, value] of Object.entries(state)) {
+            distanceList.push(parseFloat(value.distance))
+            if (value.timeInSec != 0) {
+                timeList.push(parseInt(value.timeInSec))
+            }
 
-    $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}`)
+        }
+        // Badges
+        $("#highest-dist").attr("data-bs-content", `Longest distance ran: ${Math.max.apply(null, distanceList).toFixed(2)} km (${(Math.max.apply(null, distanceList) / 1.609).toFixed(2)} mi)`)
+        $("#amt-runs").attr("data-bs-content", `Number of runs: ${distanceList.length}`)
+        if (findTotalTime(timeList) != 0) {
+            $("#fastest-run").attr("data-bs-content", `Fastest run ${(findFastestSpeed(state)).toFixed(2)}km/h`)
+        }
+
+        // Table Stats
+        console.log(timeList)
+        if (findTotalTime(timeList) != 0) {
+            $("#avg-run-time").text(`${(findTotalTime(timeList) / timeList.length).toFixed(2)}min`)
+        }
+        $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}km`)
+        if (findTotalTime(timeList) != 0) {
+            $("#total-run-time").text(`${(findTotalTime(timeList).toFixed(2))}h`)
+        }
+
+    }
+
 }
 function initModalListener() {
-    let stateString = localStorage.getItem("state");
-    let state = JSON.parse(stateString);
-    const editButton = document.getElementsByClassName("list-group-item");
-    for (var i = 0; i < editButton.length; i++) {
-        editButton[i].addEventListener("click", function () {
-            $("#distance").val(state[this.id].distance)
-            $("#name").val(state[this.id].name)
-            $("#time").val(state[this.id].timeInSec)
-            $("#delete").attr("key", this.id)
-        })
-    }
-
     const deleteButton = document.getElementById("delete");
     deleteButton.addEventListener("click", function () {
+        console.log("ok")
         const key = this.getAttribute("key")
+        console.log(key)
         const state = JSON.parse(localStorage.getItem("state"));
         delete state[`${key}`];
         localStorage.setItem("state", JSON.stringify(state));
         loadList();
         loadBadgesAndStats();
     })
+
+    const saveButton = document.getElementById("save")
+    saveButton.addEventListener("click", function (event) {
+        event.preventDefault();
+        const key = this.getAttribute("key")
+        const state = JSON.parse(localStorage.getItem("state"));
+        state[key] = {
+            distance: state[key].distance,
+            name: $("#name").val(),
+            lineList: state[key].lineList,
+            timeInSec: state[key].timeInSec,
+        }
+        localStorage.setItem("state", JSON.stringify(state));
+        loadList();
+        loadBadgesAndStats();
+    })
+
+    const viewButton = document.getElementById("view")
+    viewButton.addEventListener("click", function (event) {
+        console.log("view")
+        window.location.href = `viewMap.html?key=${this.getAttribute("key")}`;
+    })
+}
+function editButtonListener() {
+    let stateString = localStorage.getItem("state");
+    let state = JSON.parse(stateString);
+    const editButton = document.getElementsByClassName("list-group-item");
+    for (var i = 0; i < editButton.length; i++) {
+        editButton[i].addEventListener("click", function () {
+            $("#distance").val(state[this.id].distance);
+            $("#name").val(state[this.id].name);
+            $("#time").val(state[this.id].timeInSec);
+            $("#delete").attr("key", this.id);
+            $("#save").attr("key", this.id);
+            $("#view").attr("key", this.id);
+        })
+    }
+}
+initModalListener();
+initDisplayListeners();
+// Firebase Database
+function getUserData(userId) {
+    firebase.database().ref('/users/' + userId).once('value').then((snapshot) => {
+        if (snapshot.val() != null) {
+            localStorage.setItem("state", JSON.stringify(snapshot.val().state))
+        }
+        loadList();
+        editButtonListener();
+        loadBadgesAndStats();
+        $("#row-wrapper").css("display", "")
+    });
 }
 
-window.onload = () => {
-    loadList();
-    initModalListener();
-    initDisplayListeners();
-    loadBadgesAndStats();
-}
+var firebaseConfig = {
+    apiKey: "AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI",
+    authDomain: "wired-apex-298001.firebaseapp.com",
+    databaseURL: "https://wired-apex-298001-default-rtdb.firebaseio.com",
+    projectId: "wired-apex-298001",
+    storageBucket: "wired-apex-298001.appspot.com",
+    messagingSenderId: "474498507020",
+    appId: "1:474498507020:web:b517e6139a985f82832929",
+    measurementId: "G-0FBKY5Y04J"
+};
+
+firebase.initializeApp(firebaseConfig);
+var googleProvider = new firebase.auth.GoogleAuthProvider();
+var database = firebase.database();
+firebase.auth().onAuthStateChanged(((user) => {
+    if (user) {
+        console.log(user.uid)
+        getUserData(user.uid);
+        $('#login-modal').modal("hide");
+    } else {
+        $('#login-modal').modal("show")
+        const loginBtn = document.getElementById("login");
+        loginBtn.addEventListener("click", function () {
+            firebase.auth().signInWithRedirect(googleProvider)
+        })
+    }
+}))

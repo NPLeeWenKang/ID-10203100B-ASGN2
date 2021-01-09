@@ -7,14 +7,21 @@
     font-size: 12px;
 }
 #container{
+    
     position: relative;
     width: 90%;
     margin: auto;
+    margin-top: 10px;
     display: flex;
     justify-content: center;
     height: calc(100vh - 100px);
 }
-
+#loading{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+}
 .row{
     position: relative;
     width: 100%;
@@ -111,10 +118,13 @@ legend{
     cursor: default;
     display: inline;
 }
-
-@media (max-width:768px){
+.user-statistic{
+    max-width: 700px;
+    margin: auto;
+    margin-bottom: 16px;
+}
+@media screen and (max-width:768px){
     #statistics{
-        min-height: 100vh !important;
         padding-left: 0px;
     }
     .card{
@@ -129,4 +139,5 @@ legend{
     .weatherText{
         font-size: 11px !important;
     }
+    
 }

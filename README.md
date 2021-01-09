@@ -40,11 +40,11 @@ https://www.chartjs.org/
 https://getbootstrap.com/
 
 ### Website
-1. Tracking distance ran</br>
+1. Tracking distance ran:</br>
 This feature allows users to use a Google Map to plot their route, displaying their route's total distance. After ploting their route, users are able to save their route, route name and timing.</br>
 When developing this feature, I had to I had to use coordinates obtained from the graph to determine the distance ran. To do this, I would have to use the Haversine Formular (https://en.wikipedia.org/wiki/Haversine_formula). Fortunately, Google had a blog post showing of how to implement this math formula. (https://cloud.google.com/blog/products/maps-platform/how-calculate-distances-map-maps-javascript-api) </br>
 
-2. Weather forecast</br>
+2. Weather forecast:</br>
 
 ## Testing
 
