@@ -59,7 +59,46 @@ When developing this feature, I had to I had to use coordinates obtained from th
 ### Contact form
 
 ## Credits
+### APIs and Library
+* Google Maps Javascript API: https://developers.google.com/maps/documentation/javascript/overview
+
+* Ipapi API: https://ipapi.co/
+
+* OpenWeatherMap API: https://openweathermap.org/
+
+* Firebase API: https://firebase.google.com/docs/reference
+
+* Chartjs: https://www.chartjs.org/
+
+* Bootstrap: https://getbootstrap.com/
+
 ### Icons
+* Medal Icon (flaticon): https://www.flaticon.com/free-icon/medal_2583344?term=medal&page=1&position=9&related_item_id=2583344
 
-### Certain parts of the website was inspired by
+* Stopwatch Icon (flaticon): https://www.flaticon.com/free-icon/stopwatch_3983066?term=stopwatch&page=1&position=72&related_item_id=3983066
 
+* Number 2 Icon (flaticon): https://www.flaticon.com/free-icon/number_179350?term=number&page=1&position=10&related_item_id=179350
+
+* Number 3 Icon (flaticon): https://www.flaticon.com/free-icon/number_179350?term=number&page=1&position=10&related_item_id=179350
+
+* Slot machine Icon (flaticon): https://www.flaticon.com/free-icon/losing-result-of-slot-machine_55528?term=slot%20machine%20number&page=1&position=2&related_item_id=55528
+
+* Running man Icon (flaticon): https://www.pinterest.com/pin/312859505343736086/
+
+* Add Icon (Bootstrap):https://icons.getbootstrap.com/icons/plus/
+
+* View Icon (Bootstrap): https://icons.getbootstrap.com/icons/map/
+
+* Map Icon (Bootstrap): https://icons.getbootstrap.com/icons/binoculars-fill/
+
+* Arrow-Left Icon: https://icons.getbootstrap.com/icons/arrow-left-short/
+
+* Arrow-Right Icon: https://icons.getbootstrap.com/icons/arrow-right-short/
+
+* Arrow-Counterclockwise Icon: https://icons.getbootstrap.com/icons/arrow-counterclockwise/
+
+### Guides / Tutorials
+
+* https://cloud.google.com/blog/products/maps-platform/how-calculate-distances-map-maps-javascript-api
+
+* https://www.movable-type.co.uk/scripts/latlong.html

@@ -335,8 +335,10 @@ function loadBadgesAndStats() {
         let state = JSON.parse(stateString);
         const distanceList = []
         const timeList = []
+        const dateList = []
         for (const [key, value] of Object.entries(state)) {
             distanceList.push(parseFloat(value.distance))
+            dateList.push(key)
             if (value.timeInSec != 0) {
                 timeList.push(parseInt(value.timeInSec))
             }
@@ -348,7 +350,12 @@ function loadBadgesAndStats() {
         if (findTotalTime(timeList) != 0) {
             $("#fastest-run").attr("data-bs-content", `Fastest run ${(findFastestSpeed(state)).toFixed(2)}km/h`)
         }
-
+        if (findTotalTime(timeList) == 0) {
+            const dateNow = new Date()
+            const oldDate = new Date(parseInt(dateList[0]))
+            const dateDif = dateNow.getFullYear() - oldDate.getFullYear()
+            $("#acc-lifespan").attr("data-bs-content", `Account age: ${dateDif} years`)
+        }
         // Table Stats
         console.log(timeList)
         if (findTotalTime(timeList) != 0) {
