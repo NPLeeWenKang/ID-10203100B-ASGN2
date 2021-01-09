@@ -38,7 +38,7 @@ legend{
 
 @media (max-width: 600px){
     #map{
-        height: calc(100vh - 50px);
+        height: calc(100% - 50px);
         margin: 0px;
     }
     input.distanceDisplayModal{

@@ -14,7 +14,7 @@
     margin-top: 10px;
     display: flex;
     justify-content: center;
-    height: calc(100vh - 100px);
+    height: calc(100% - 100px);
 }
 #loading{
     position: absolute;
