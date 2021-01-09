@@ -70,19 +70,16 @@ function initListeners(pathHistory, lineList, markerList) {
         }
 
         if (passed) {
-            if ($("#hr").val() == "") {
-                var timeHr = 0
-            } else {
+            var timeHr = 0;
+            var timeMin = 0;
+            var timeSec = 0;
+            if ($("#hr").val() != "") {
                 var timeHr = parseInt($("#hr").val()) * 60 * 60
             }
-            if ($("#min").val() == "") {
-                var timeMin = 0
-            } else {
+            if ($("#min").val() != "") {
                 var timeMin = parseInt($("#min").val()) * 60
             }
-            if ($("#sec").val() == "") {
-                var timeSec = 0
-            } else {
+            if ($("#sec").val() != "") {
                 var timeSec = parseInt($("#sec").val())
             }
 
@@ -100,31 +97,7 @@ function initListeners(pathHistory, lineList, markerList) {
 
             }
             setUserData(newState)
-            // localStorage.setItem('state', JSON.stringify(newState))
-            // window.location.href = "index.html"
         }
-        // if ($("#pathName").val().length >= 1) {
-        //     $("#pathName").addClass("is-valid").removeClass("is-invalid")
-        //     $("#metric").addClass("is-valid").removeClass("is-invalid")
-        //     $("#imperial").addClass("is-valid").removeClass("is-invalid")
-        //     let originalState = localStorage.getItem("state");
-        //     let arr = {
-        //         name: $("#pathName").val(),
-        //         distance: $("#distance").attr("distance"),
-        //         lineList: lineList,
-        //     }
-        //     let newState = {
-        //         ...JSON.parse(originalState),
-        //         [`${Date.now()}`]: arr,
-        //     }
-        //     localStorage.setItem('state', JSON.stringify(newState))
-        //     // //window.location.href = "../index.html"
-        // } else {
-        //     $("#pathName").addClass("is-invalid").removeClass("is-valid")
-        //     $("#metric").addClass("is-invalid").removeClass("is-valid")
-        //     $("#imperial").addClass("is-invalid").removeClass("is-valid")
-        //     console.log($("#distance").attr("distance"))
-        // }
 
     })
     $('#staticBackdrop').on('hide.bs.modal', function () {
@@ -423,29 +396,6 @@ function initMap() {
         console.log("path:", pathHistory.length)
         drawLine(pathHistory, lineList, map)
         calculateDistance(markerList)
-
-        // if (list.length == 2) {
-        //     var service = new google.maps.DistanceMatrixService();
-        //     service.getDistanceMatrix(
-        //         {
-        //             origins: [list[0]],
-        //             destinations: [list[1]],
-        //         }, function (result, status) {
-        //             console.log(result);
-        //         });
-        //     // $.ajax({
-        //     //     method: "GET",
-        //     //     dataType: "json",
-        //     //     contentType: "text/plain",
-        //     //     url: "https://maps.googleapis.com/maps/api/distancematrix/json",
-        //     //     headers: {},
-        //     //     data: { origins: "1.4321913911362303, 103.78751998122362", destinations: "1.4313172639890452, 103.78433888133196|1.4339932718107122, 103.78351544316439", },
-        //     // }).done(function (result) {
-        //     //     console.log(result)
-        //     // })
-        //     $('#length').text(getDistanceFromLatLonInKm(list[0].lat, list[0].lng, list[1].lat, list[1].lng))
-        //     console.log(getDistanceFromLatLonInKm(list[0].lat, list[0].lng, list[1].lat, list[1].lng))
-        //}
     })
 
 }

@@ -41,15 +41,24 @@ https://getbootstrap.com/
 
 ### Website
 1. Tracking distance ran:</br>
-This feature allows users to use a Google Map to plot their route, displaying their route's total distance. After ploting their route, users are able to save their route, route name and timing.</br>
-When developing this feature, I had to I had to use coordinates obtained from the graph to determine the distance ran. To do this, I would have to use the Haversine Formular (https://en.wikipedia.org/wiki/Haversine_formula). Fortunately, Google had a blog post showing of how to implement this math formula. (https://cloud.google.com/blog/products/maps-platform/how-calculate-distances-map-maps-javascript-api) </br>
-
+This feature allows users to use Google Map to plot their route, displaying their route's total distance. After saving their route, users revisit and veiew their route.</br>
+<
 2. Weather forecast:</br>
+By using Ipapi API to obtain the user's country, then inputing the location into the OpenWeatherMap API, the website is able to obtain the daily weather forecast and the hourly temperature.
+
+3. Statistics:</br>
+This feature allows users to view some basic information about their runs, showing them their total time spent running, average running time and total distance traveled.
+
+4. Login using Firebase Auth:</br>
+This allows users to login using their google account. Ensuring users are able to access their account from several devices.
 
 ## Testing
-
+Testing is a vital part in progamming and website development. It ensures that what we are building works and is functional. Therefore, comprehensive testing methods has to be in place to help expose errors<br>
 ### Online validators
-
+In addition to using W3School's CSS and Markup validator service, for this assignment, I also used JSHint's Javascript validator. This allows me to ensure that my codes has no errors.
+1. W3C CSS Validation Service: https://jigsaw.w3.org/css-validator/
+2. W3C Markup Validation Service: https://validator.w3.org/
+3. JSHint Javascript Validator:https://jshint.com/
 ### Screen size
 
 ### Browsers

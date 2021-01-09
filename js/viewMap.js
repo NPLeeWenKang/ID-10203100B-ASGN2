@@ -89,19 +89,16 @@ function initListeners(pathHistory, lineList, markerList) {
         }
 
         if (passed) {
-            if ($("#hr").val() == "") {
-                var timeHr = 0
-            } else {
+            var timeHr = 0;
+            var timeMin = 0;
+            var timeSec = 0;
+            if ($("#hr").val() != "") {
                 var timeHr = parseInt($("#hr").val()) * 60 * 60
             }
-            if ($("#min").val() == "") {
-                var timeMin = 0
-            } else {
+            if ($("#min").val() != "") {
                 var timeMin = parseInt($("#min").val()) * 60
             }
-            if ($("#sec").val() == "") {
-                var timeSec = 0
-            } else {
+            if ($("#sec").val() != "") {
                 var timeSec = parseInt($("#sec").val())
             }
             console.log(lineList)
