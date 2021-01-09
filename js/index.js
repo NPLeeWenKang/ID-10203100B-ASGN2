@@ -451,6 +451,7 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
 var googleProvider = new firebase.auth.GoogleAuthProvider();
 var database = firebase.database();
 firebase.auth().onAuthStateChanged(((user) => {
