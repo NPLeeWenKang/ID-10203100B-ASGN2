@@ -453,7 +453,10 @@ var firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-var googleProvider = new firebase.auth.GoogleAuthProvider({ prompt: 'select_account' });
+var googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({
+    prompt: 'select_account'
+});
 var database = firebase.database();
 firebase.auth().onAuthStateChanged(((user) => {
     if (user) {
