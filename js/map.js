@@ -1,38 +1,4 @@
-// var firebaseConfig = {
-//     apiKey: "AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI",
-//     authDomain: "wired-apex-298001.firebaseapp.com",
-//     projectId: "wired-apex-298001",
-//     storageBucket: "wired-apex-298001.appspot.com",
-//     messagingSenderId: "474498507020",
-//     appId: "1:474498507020:web:b517e6139a985f82832929",
-//     measurementId: "G-0FBKY5Y04J"
-// };
-// firebase.initializeApp(firebaseConfig);
-// var provider = new firebase.auth.GoogleAuthProvider();
-// firebase.auth().onAuthStateChanged(((user) => {
-//     if (user) {
-//         console.log(user.uid)
-//     } else {
-//         firebase.auth().signInWithRedirect(provider).then((result) => {
-//             console.log(result)
-//         });
-//     }
-// }))
 
-// $(document).ready(function () {
-//     var param = { lastName: "Doe", firstName: "John" };
-//     var randome = Math.floor((Math.random() * 100000000) + 1)
-//     $.ajax({
-//         url: "https://wired-apex-298001-default-rtdb.firebaseio.com/user/97554689.json",
-//         type: "get",
-//         success: function (result) {
-//             console.log(result)
-//         },
-//         error: function (error) {
-//             alert("error: " + error);
-//         }
-//     });
-// });
 function initListeners(pathHistory, lineList, markerList) {
     const savebutton = document.getElementById("saveButton");
     //$('#saveButton').replaceWith($('#saveButton').clone());
@@ -484,6 +450,7 @@ function initMap() {
 
 }
 
+// Firebase
 function setUserData(newState) {
     var user = firebase.auth().currentUser;
     firebase.database().ref('users/' + user.uid).set({
@@ -514,6 +481,6 @@ var googleProvider = new firebase.auth.GoogleAuthProvider();
 var database = firebase.database();
 firebase.auth().onAuthStateChanged(((user) => {
     if (!user) {
-
+        window.location.href = "index.html"
     }
 }))

@@ -215,27 +215,55 @@ function findFastestSpeed(state) {
 }
 function loadBadgesAndStats() {
     let stateString = localStorage.getItem("state");
-    let state = JSON.parse(stateString);
-    const distanceList = []
-    const timeList = []
-    for (const [key, value] of Object.entries(state)) {
-        distanceList.push(parseFloat(value.distance))
-        if (value.timeInSec != 0) {
-            timeList.push(parseInt(value.timeInSec))
+    if (stateString != null) {
+        let state = JSON.parse(stateString);
+        const distanceList = []
+        const timeList = []
+        for (const [key, value] of Object.entries(state)) {
+            distanceList.push(parseFloat(value.distance))
+            if (value.timeInSec != 0) {
+                timeList.push(parseInt(value.timeInSec))
+            }
+
+        }
+        // Badges
+        $("#highest-dist").attr("data-bs-content", `Longest distance ran: ${Math.max.apply(null, distanceList).toFixed(2)} km (${(Math.max.apply(null, distanceList) / 1.609).toFixed(2)} mi)`)
+        $("#amt-runs").attr("data-bs-content", `Number of runs: ${distanceList.length}`)
+        if (findTotalTime(timeList) != 0) {
+            $("#fastest-run").attr("data-bs-content", `Fastest run ${(findFastestSpeed(state)).toFixed(2)}km/h`)
+        }
+
+        // Table Stats
+        console.log(timeList)
+        if (findTotalTime(timeList) != 0) {
+            $("#avg-run-time").text(`${(findTotalTime(timeList) / timeList.length).toFixed(2)}min`)
+        }
+        $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}km`)
+        if (findTotalTime(timeList) != 0) {
+            $("#total-run-time").text(`${(findTotalTime(timeList).toFixed(2))}h`)
         }
 
     }
-    // Badges
-    $("#highest-dist").attr("data-bs-content", `Longest distance ran: ${Math.max.apply(null, distanceList).toFixed(2)} km (${(Math.max.apply(null, distanceList) / 1.609).toFixed(2)} mi)`)
-    $("#amt-runs").attr("data-bs-content", `Number of runs: ${distanceList.length}`)
-    $("#fastest-run").attr("data-bs-content", `Fastest run ${(findFastestSpeed(state)).toFixed(2)}km/h`)
-    // Table Stats
-    console.log(timeList)
-    $("#avg-run-time").text(`${(findTotalTime(timeList) / timeList.length).toFixed(2)}min`)
-    $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}km`)
-    $("#total-run-time").text(`${(findTotalTime(timeList).toFixed(2))}km`)
+
 }
 
 window.onload = () => {
     loadBadgesAndStats();
 }
+var firebaseConfig = {
+    apiKey: "AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI",
+    authDomain: "wired-apex-298001.firebaseapp.com",
+    databaseURL: "https://wired-apex-298001-default-rtdb.firebaseio.com",
+    projectId: "wired-apex-298001",
+    storageBucket: "wired-apex-298001.appspot.com",
+    messagingSenderId: "474498507020",
+    appId: "1:474498507020:web:b517e6139a985f82832929",
+    measurementId: "G-0FBKY5Y04J"
+};
+
+firebase.initializeApp(firebaseConfig);
+firebase.auth().onAuthStateChanged(((user) => {
+    if (!user) {
+        window.location.href = "index.html"
+    }
+}))

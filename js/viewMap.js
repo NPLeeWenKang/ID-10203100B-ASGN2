@@ -5,7 +5,7 @@ function setMap(map, lineList, markerList) {
     const key = new URLSearchParams(queryString).get("key")
     const state = JSON.parse(localStorage.getItem("state"))
     const chosenMapState = state[key]
-    lineList = chosenMapState.lineList
+    lineList.push(...chosenMapState.lineList)
     for (const [key, value] of Object.entries(lineList)) {
         let marker = new google.maps.Marker({
             position: value,
@@ -18,7 +18,6 @@ function setMap(map, lineList, markerList) {
     drawLine(lineList, map)
     map.setCenter(lineList[0])
 }
-
 function initListeners(pathHistory, lineList, markerList) {
     const savebutton = document.getElementById("saveButton");
     //$('#saveButton').replaceWith($('#saveButton').clone());
@@ -44,20 +43,82 @@ function initListeners(pathHistory, lineList, markerList) {
             $("#pathName").addClass("is-invalid").removeClass("is-valid")
             passed = passed && false
         }
+        // Check if hr is valid (is integer)
+        if ($("#hr").val() != "") {
+            if (!isNaN(parseInt($("#hr").val()))) {
+                $("#hr").addClass("is-valid").removeClass("is-invalid")
+                $("#hr").val(parseInt($("#hr").val()))
+                passed = passed && true
+            } else {
+                $("#hr").addClass("is-invalid").removeClass("is-valid")
+                passed = passed && false
+            }
+        } else {
+            $("#hr").removeClass("is-invalid").removeClass("is-valid")
+            passed = passed && true
+        }
+
+        // Check if min is valid (is integer)
+        if ($("#min").val() != "") {
+            if (!isNaN(parseInt($("#min").val()))) {
+                $("#min").addClass("is-valid").removeClass("is-invalid")
+                $("#min").val(parseInt($("#min").val()))
+                passed = passed && true
+            } else {
+                $("#min").addClass("is-invalid").removeClass("is-valid")
+                passed = passed && false
+            }
+        } else {
+            $("#min").removeClass("is-invalid").removeClass("is-valid")
+            passed = passed && true
+        }
+
+        // Check if sec is valid (is integer)
+        if ($("#sec").val() != "") {
+            if (!isNaN(parseInt($("#sec").val()))) {
+                $("#sec").addClass("is-valid").removeClass("is-invalid")
+                $("#sec").val(parseInt($("#sec").val()))
+                passed = passed && true
+            } else {
+                $("#sec").addClass("is-invalid").removeClass("is-valid")
+                passed = passed && false
+            }
+        } else {
+            $("#sec").removeClass("is-invalid").removeClass("is-valid")
+            passed = passed && true
+        }
+
         if (passed) {
+            if ($("#hr").val() == "") {
+                var timeHr = 0
+            } else {
+                var timeHr = parseInt($("#hr").val()) * 60 * 60
+            }
+            if ($("#min").val() == "") {
+                var timeMin = 0
+            } else {
+                var timeMin = parseInt($("#min").val()) * 60
+            }
+            if ($("#sec").val() == "") {
+                var timeSec = 0
+            } else {
+                var timeSec = parseInt($("#sec").val())
+            }
+            console.log(lineList)
+            let totalTime = timeHr + timeMin + timeSec
             let originalState = localStorage.getItem("state");
             let arr = {
                 name: $("#pathName").val(),
                 distance: $("#distance").attr("distance"),
                 lineList: lineList,
+                timeInSec: totalTime,
             }
             let newState = {
                 [`${Date.now()}`]: arr,
                 ...JSON.parse(originalState),
 
             }
-            localStorage.setItem('state', JSON.stringify(newState))
-            window.location.href = "index.html"
+            setUserData(newState)
         }
         // if ($("#pathName").val().length >= 1) {
         //     $("#pathName").addClass("is-valid").removeClass("is-invalid")
@@ -270,11 +331,11 @@ const callback = (results, status) => {
         // handle this case
     }
 };
-
+const lineList = []
 function initMap() {
     const myLatlng = { lat: 0, lng: 0 };
     const markerList = []
-    const lineList = []
+
     const pathHistory = []
     initListeners(pathHistory, lineList, markerList);
     const map = new google.maps.Map(document.getElementById("map"), {
@@ -287,7 +348,7 @@ function initMap() {
     });
 
     setMap(map, lineList, markerList)
-
+    console.log(lineList)
     const backDiv = document.createElement("div");
     backButton(backDiv);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(backDiv);
@@ -302,3 +363,37 @@ function initMap() {
 
 
 }
+
+function setUserData(newState) {
+    var user = firebase.auth().currentUser;
+    firebase.database().ref('users/' + user.uid).set({
+        state: newState
+    }, (error) => {
+        if (error) {
+            console.alert(error);
+        } else {
+            window.location.href = "index.html"
+        }
+    });
+
+}
+
+var firebaseConfig = {
+    apiKey: "AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI",
+    authDomain: "wired-apex-298001.firebaseapp.com",
+    databaseURL: "https://wired-apex-298001-default-rtdb.firebaseio.com",
+    projectId: "wired-apex-298001",
+    storageBucket: "wired-apex-298001.appspot.com",
+    messagingSenderId: "474498507020",
+    appId: "1:474498507020:web:b517e6139a985f82832929",
+    measurementId: "G-0FBKY5Y04J"
+};
+
+firebase.initializeApp(firebaseConfig);
+var googleProvider = new firebase.auth.GoogleAuthProvider();
+var database = firebase.database();
+firebase.auth().onAuthStateChanged(((user) => {
+    if (!user) {
+        window.location.href = "index.html"
+    }
+}))

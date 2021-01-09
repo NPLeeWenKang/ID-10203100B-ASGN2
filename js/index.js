@@ -161,7 +161,7 @@ function createListElement(listDOM, indiviualElement, key) {
     card.appendChild(timeTakenDiv);
     card.appendChild(dateDiv);
     card.appendChild(controlDiv);
-    listDOM.appendChild(card);
+    listDOM.prepend(card);
 }
 const mapButton = document.getElementById("button-to-map");
 mapButton.addEventListener("click", function () {
@@ -387,6 +387,7 @@ function initModalListener() {
             timeInSec: state[key].timeInSec,
         }
         localStorage.setItem("state", JSON.stringify(state));
+        updateUserData(state)
         loadList();
         loadBadgesAndStats();
     })
@@ -426,7 +427,13 @@ function getUserData(userId) {
         $("#row-wrapper").css("display", "")
     });
 }
-
+function updateUserData(newState) {
+    var user = firebase.auth().currentUser;
+    console.log(newState)
+    firebase.database().ref('users/' + user.uid).set({
+        state: newState
+    });
+}
 var firebaseConfig = {
     apiKey: "AIzaSyAD4mXK15auf09DWDS0lgstTYJ_07hhDeI",
     authDomain: "wired-apex-298001.firebaseapp.com",
