@@ -6,7 +6,8 @@ html {
     height: 100%;
 }
 body {
-    height: calc(100% - 50px);
+    height: calc(100% - 100px);
+    position: relative;
 }
 #extra-info{
     color: #b0b0b0;
