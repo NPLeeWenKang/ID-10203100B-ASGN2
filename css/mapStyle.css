@@ -13,6 +13,7 @@ html, body {
     padding: 0;
 }
 #map{
+    /* Ensures that the map size fits the page */
     height: calc(100vh - 50px);
     margin: 0px;
 }
@@ -37,6 +38,7 @@ legend{
 }
 
 @media (max-width: 600px){
+    /* Mobile View */
     #map{
         height: calc(100% - 50px);
         margin: 0px;

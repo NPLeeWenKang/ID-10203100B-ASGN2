@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">
@@ -23,8 +24,13 @@
             </span>
         </div>
     </nav>
+    <!-- (END) Navigation Bar -->
+
+    <!-- Google Map is placed here -->
     <div id="map">
     </div>
+
+    <!-- Bootstrap Modal (Used for submiting) -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -34,6 +40,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Main content -->
                     <div id="distance" distance="0">
                         Total distance:
                         <input type="text" id="metric" class="form-control distanceDisplayModal" readonly>
@@ -78,6 +85,7 @@
             </form>
         </div>
     </div>
+    <!-- (END) Bootstrap Modal (Used for submiting) -->
 </body>
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>

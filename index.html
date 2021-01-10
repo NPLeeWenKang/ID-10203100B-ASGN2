@@ -43,20 +43,26 @@
         </div>
     </nav>
     <!-- (END) Navigation Bar -->
+
+    <!-- Main content (Route List + Statistics) -->
     <div id="container">
         <div id="loading">
+            <!-- When website is loading -->
             <div class="spinner-border text-primary" role="status">
             </div>
         </div>
         <div class="row g-0" id="row-wrapper" style="display: none;">
             <div class="col-12 col-md-7" id="leftColumn">
+                <!-- Left column (Route List) -->
                 <div class="card">
                     <div class="card-header">
+                        <!-- List header -->
                         <div>
                             <div>Runs</div>
                             <div id="extra-info"> Click "Add" to add new runs.</div>
                         </div>
                         <button id="button-to-map" type="button" class="btn btn-secondary right-justified-btn">
+                            <!-- Leads to map.html -->
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                                 class="bi bi-plus" viewBox="0 0 16 16">
                                 <path
@@ -66,12 +72,14 @@
                         </button>
                     </div>
                     <ul class="list-group list-group-flush" id="listDOM">
+                        <!-- List of routes -->
                         <li class="list-group-item">
                         </li>
                     </ul>
                 </div>
             </div>
             <div id="statistics" class="col-12 col-md-5">
+                <!-- Contains Hourly and Daily weather forecast and statistics -->
                 <div style="height: 200px;">
                     <canvas id="myChart" style="max-width: 700px;"></canvas>
                 </div>
@@ -100,13 +108,16 @@
                 <div>
                     <div style="max-width: 400px; margin: auto;"
                         class="d-flex justify-content-between align-items-center">
+                        <!-- Statistic Badges -->
                         <div>
+                            <!-- Years of Service -->
                             <button id="acc-lifespan" type="button" class="btn btn-secondary" data-bs-container="body"
                                 data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Account age">
                                 <img style="pointer-events: none;" src="src/medal-1.png" width="30" alt="" srcset="">
                             </button>
                         </div>
                         <div>
+                            <!-- Longest Distance ran -->
                             <button id="highest-dist" type="button" class="btn btn-secondary" data-bs-container="body"
                                 data-bs-toggle="popover" data-bs-placement="bottom"
                                 data-bs-content="Longest distance ran: 0">
@@ -114,12 +125,14 @@
                             </button>
                         </div>
                         <div>
+                            <!-- Fastest Run -->
                             <button id="fastest-run" type="button" class="btn btn-secondary" data-bs-container="body"
                                 data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Fastest run">
                                 <img style="pointer-events: none;" src="src/stopwatch.png" width="30" alt="" srcset="">
                             </button>
                         </div>
                         <div>
+                            <!-- Number of runs -->
                             <button id="amt-runs" type="button" class="btn btn-secondary" data-bs-container="body"
                                 data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Number of runs: 0">
                                 <img style="pointer-events: none;" src="src/number-count.png" width="30" alt=""
@@ -132,7 +145,9 @@
             </div>
         </div>
     </div>
+    <!-- (END) Main content (Route List + Statistics) -->
 
+    <!-- Bootstrap Modal (Used for editing route) -->
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -173,6 +188,9 @@
             </form>
         </div>
     </div>
+    <!-- (END) Bootstrap Modal (Used for editing route) -->
+
+    <!-- Bootstrap Modal (Used for Login) -->
     <div class="modal fade" id="login-modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-sm">
@@ -187,6 +205,7 @@
             </form>
         </div>
     </div>
+    <!-- (END) Bootstrap Modal (Used for Login) -->
 </body>
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.2.0/firebase-auth.js"></script>

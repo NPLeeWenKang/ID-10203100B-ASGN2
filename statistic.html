@@ -13,6 +13,7 @@
 </head>
 
 <body>
+    <!-- Navigation Bar -->
     <nav class="navbar navbar-dark bg-dark">
         <div class="container-fluid">
             <span class="navbar-brand mb-0 h1">
@@ -32,10 +33,17 @@
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Weather and Statistics</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"
+                            onclick="firebase.auth().signOut(); $('#row-wrapper').css('display', 'none');">Sign Out</a>
+                    </li>
                 </ul>
             </div>
         </div>
     </nav>
+    <!-- (END) Navigation Bar -->
+
+    <!-- Main content (Statistics only) -->
     <div id="container">
         <div id="statistics" class="col-12">
             <div style="height: 200px;">
@@ -68,34 +76,33 @@
                     <div>
                         <button id="acc-lifespan" type="button" class="btn btn-secondary" data-bs-container="body"
                             data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Account age">
-                            <img style="pointer-events: none;" src="src/medal-1.png" width="30px" alt="" srcset="">
+                            <img style="pointer-events: none;" src="src/medal-1.png" width="30" alt="" srcset="">
                         </button>
                     </div>
                     <div>
                         <button id="highest-dist" type="button" class="btn btn-secondary" data-bs-container="body"
                             data-bs-toggle="popover" data-bs-placement="bottom"
                             data-bs-content="Longest distance ran: 0">
-                            <img style="pointer-events: none;" src="src/runner.png" width="30px" alt="" srcset="">
-                        </button>
+                            <img style="pointer-events: none;" src="src/runner.png" width="30" alt="" srcset="">
                         </button>
                     </div>
                     <div>
                         <button id="fastest-run" type="button" class="btn btn-secondary" data-bs-container="body"
                             data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Fastest run">
-                            <img style="pointer-events: none;" src="src/stopwatch.png" width="30px" alt="" srcset="">
+                            <img style="pointer-events: none;" src="src/stopwatch.png" width="30" alt="" srcset="">
                         </button>
                     </div>
                     <div>
                         <button id="amt-runs" type="button" class="btn btn-secondary" data-bs-container="body"
                             data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Number of runs: 0">
-                            <img style="pointer-events: none;" src="src/number-count.png" width="30px" alt="" srcset="">
+                            <img style="pointer-events: none;" src="src/number-count.png" width="30" alt="" srcset="">
                         </button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    </div>
+    <!-- (END) Main content (Statistics only) -->
 
 
 

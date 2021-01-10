@@ -216,7 +216,7 @@ function findTotalTime(timeList) {
     timeList.forEach(time => {
         total_time += time;
     });
-    return total_time / 60;
+    return total_time;
 }
 function findFastestSpeed(state) {
     // Finds fastest run
@@ -250,7 +250,7 @@ function loadBadgesAndStats() {
         if (findTotalTime(timeList) != 0) {
             $("#fastest-run").attr("data-bs-content", `Fastest run ${(findFastestSpeed(state)).toFixed(2)}km/h`)
         }
-        if (findTotalTime(timeList) == 0) {
+        if (findTotalTime(timeList) != 0) {
             const dateNow = new Date()
             const oldDate = new Date(parseInt(dateList[0]))
             const dateDif = dateNow.getFullYear() - oldDate.getFullYear()
@@ -259,11 +259,11 @@ function loadBadgesAndStats() {
 
         // Table Stats
         if (findTotalTime(timeList) != 0) {
-            $("#avg-run-time").text(`${(findTotalTime(timeList) / timeList.length).toFixed(2)}min`)
+            $("#avg-run-time").text(`${((findTotalTime(timeList) / 60) / timeList.length).toFixed(2)}min`)
         }
         $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}km`)
         if (findTotalTime(timeList) != 0) {
-            $("#total-run-time").text(`${(findTotalTime(timeList).toFixed(2))}h`)
+            $("#total-run-time").text(`${((findTotalTime(timeList) / 60 / 60).toFixed(2))}h`)
         }
 
     }

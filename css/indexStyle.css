@@ -35,9 +35,6 @@ body {
     height: 100%;
 }
 .card{
-    /* position: absolute;
-    left: 50%;
-    transform: translateX(-50%); */
     height: 100%;
 }
 #leftColumn{
@@ -45,6 +42,7 @@ body {
 }
 
 .card-header{
+    /* Handles the list header */
     display: flex;
     justify-content:space-between;
     align-items: center;
@@ -131,6 +129,7 @@ legend{
     margin-bottom: 16px;
 }
 @media screen and (max-width:768px){
+    /* Mobile View */
     #statistics{
         padding-left: 0px;
     }
