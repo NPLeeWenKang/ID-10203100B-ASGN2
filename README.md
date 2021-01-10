@@ -43,7 +43,7 @@ https://getbootstrap.com/
 ### Website
 1. Tracking distance ran:</br>
 This feature allows users to use Google Map to plot their route, displaying their route's total distance. After saving their route, users revisit and veiew their route.</br>
-<
+
 2. Weather forecast:</br>
 By using Ipapi API to obtain the user's country, then inputing the location into the OpenWeatherMap API, the website is able to obtain the daily weather forecast and the hourly temperature.
 
@@ -87,7 +87,7 @@ To ensure that my user's data is safe and secure, I had to implement some Databa
 * CSS
 * Javascript
 * Jquery
-### APIs and Library
+### APIs and Libraries
 * Google Maps Javascript API: https://developers.google.com/maps/documentation/javascript/overview
 
 * Ipapi API: https://ipapi.co/
