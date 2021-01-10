@@ -1,4 +1,8 @@
+// statistic.js is a striped down version of index.js
+// This is because statistic.js do not need all the features in index,js
+
 function checkDistance(distance) {
+    // Converts distance data into the correct display type
     distanceInKm = (distance).toFixed(2);
     if (distanceInKm >= 1) {
         distanceInMile = (distance / 1.609).toFixed(2);
@@ -11,6 +15,7 @@ function checkDistance(distance) {
     }
 }
 function convertSecondsTo_Hr_Min_Sec(time) {
+    //Converts seconds to hour_min_sec
     var timeHr = Math.floor(time / 60 / 60)
     time -= timeHr * 60 * 60
     var timeMin = Math.floor(time / 60)
@@ -24,6 +29,8 @@ function convertSecondsTo_Hr_Min_Sec(time) {
 }
 
 function loadChart(dateData, tempData) {
+    // loads the ChartJS chart
+    // Uses OpenWeatherMap API's hourly temperatures to make the map
     const ctx = document.getElementById("myChart");
     var month = new Array();
     month[0] = "Jan";
@@ -94,18 +101,20 @@ function loadChart(dateData, tempData) {
 
 
 function createDateString_DMY(date) {
+    // convert date to dd/mm/yyyy format (10/1/2021)
     var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     const myDate = new Date(date * 1000);
     return `${myDate.getDate()} ${month[myDate.getMonth()]} ${myDate.getFullYear()}`;
 }
 function createDateString_DMD(date) {
-
+    // convert date to dddd, mmmm dd format (Sun, Dec 8)
     var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     var day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const myDate = new Date(date * 1000);
     return `${day[myDate.getDay()]}, ${month[myDate.getMonth()]} ${myDate.getDate()}`;
 }
 function createDailyListNode(dailyForecast, data) {
+    // Loads the daily weather forecast
     const parentDiv = document.createElement("div");
     parentDiv.className = "row g-0 d-flex align-items-center";
     const dateDiv = document.createElement("div");
@@ -144,6 +153,7 @@ function createDailyListNode(dailyForecast, data) {
     dailyForecast.appendChild(parentDiv);
 }
 function initHourly(weatherResult) {
+    // Prepares the data for loadChart()
     const tempData = [];
     const dateData = [];
     for (var i = 0; i <= 12; i++) {
@@ -164,6 +174,7 @@ function initHourly(weatherResult) {
     loadChart(dateData, tempData);
 }
 function initDaily(weatherResult) {
+    // Prepares the data for createDailyListNode()
     const dailyForecast = document.getElementById("daily-forecast");
     $("#daily-forecast h5").append(`<span> ${weatherResult.timezone}</span>`)
     $("#daily-forecast span").css("fontSize", "14px")
@@ -175,22 +186,24 @@ function initDaily(weatherResult) {
 
 }
 $.ajax({
+    // Requests from IPapi
     method: "POST",
     url: "https://ipapi.co/json",
     error: (function () {
         alert("AJAX error (https://ipapi.co/json)")
     }),
 }).done(function (ipResult) {
+    // Using the Lat Long from IPapi, search for weather data at that coordinate
     $.ajax({
         url: `https://api.openweathermap.org/data/2.5/onecall?lat=${ipResult.latitude}&lon=${ipResult.longitude}&appid=eea225520939f59f9dcd0ea6046d512b&exclude=current,minutely,alerts&units=metric`
     }).done(function (weatherResult) {
-        console.log(weatherResult);
         initHourly(weatherResult);
         initDaily(weatherResult);
     })
 })
 
 function findTotalDist(distanceList) {
+    // Finds total distance in a list of distances
     var total_dist = 0;
     distanceList.forEach(dist => {
         total_dist += dist;
@@ -198,6 +211,7 @@ function findTotalDist(distanceList) {
     return total_dist;
 }
 function findTotalTime(timeList) {
+    // Finds total time from a list of time
     var total_time = 0;
     timeList.forEach(time => {
         total_time += time;
@@ -205,6 +219,7 @@ function findTotalTime(timeList) {
     return total_time / 60;
 }
 function findFastestSpeed(state) {
+    // Finds fastest run
     const speedList = [];
     for (const [key, value] of Object.entries(state)) {
         if (value.timeInSec != 0) {
@@ -214,6 +229,7 @@ function findFastestSpeed(state) {
     return Math.max.apply(null, speedList)
 }
 function loadBadgesAndStats() {
+    // loads the statistics + badges portion of the website
     let stateString = localStorage.getItem("state");
     if (stateString != null) {
         let state = JSON.parse(stateString);
@@ -242,7 +258,6 @@ function loadBadgesAndStats() {
         }
 
         // Table Stats
-        console.log(timeList)
         if (findTotalTime(timeList) != 0) {
             $("#avg-run-time").text(`${(findTotalTime(timeList) / timeList.length).toFixed(2)}min`)
         }
@@ -268,6 +283,9 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+
+// Checks if the user is logged in. If not,
+// then send user back to index.html
 firebase.auth().onAuthStateChanged(((user) => {
     if (!user) {
         window.location.href = "index.html"

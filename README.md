@@ -2,24 +2,25 @@
 Name: Lee Wen Kang<br />
 Class: P03<br />
 Website URL: https://npleewenkang.github.io/ID-10203100B-ASGN2/<br/>
-
+Video Pitch: https://drive.google.com/file/d/17c6LZIsHEYZRfTLFOhv1JKubCYC-wju9/view?usp=sharing </br>
 ## Todo
 | Task        | Status           | Date finished  |
 | ------------- |:-------------:| -----:|
-| Finish README      | dne |  |
+| Finish README      | done | 10/1/2021 |
 | Implement login page      | done | 9/1/2021 |
-| Edit CSS tag names to be best practice      |      |    |
-| Check compatibility |       |     |
-| Finish badge and statistic system |       |     |
+| Edit CSS tag names to be best practice      |   done   | 8/1/2021   |
+| Check compatibility |  done     | 10/1/2021    |
+| Finish badge and statistic system |     done  |  9/1/2021   |
 ## Design Process
 To ensure that my website is useful to my target audience, first I would need to determine who my intended audience and users are. This would allow me to imagein and understand their point of view /  reasons to use my website, allowing me to better design the website for them.</br>
 1. As a runner, firstly, I would like to know how long my runs were. Secondly, I would like some know some basic statistics about my runs. Lastly, I would like to know the weather forecast, as this allows me to better plan when and where to run.
+2. As a cyclist, I would like to track my distance cycled. In addition, if I know the weather forecast, I am able to plan when to cycle.
 
 As my website is intended for mobile and PC view, I had to design and develop my website from a "Mobile First" perspective. This means that the mobile view is always developed first, and the PC view is developed later. To ensure the website is both mobile and PC friendly, I started developing my wireframe using Adobe Xd. This allows me to "plan" my website and ensure that the PC and mobile view were suitable and appropriate.</br>
 
-* PC version of XD wireframe: 
+* PC version of XD wireframe: https://xd.adobe.com/view/c3c20601-5e42-49b8-8c70-db96c7a843cd-9691/
 
-* Mobile version of XD wireframe: 
+* Mobile version of XD wireframe: https://xd.adobe.com/view/d6f3d813-90ad-488a-9b90-3ece81e0a96f-83a0/
 
 As said in my last Assignment (https://github.com/NPLeeWenKang/ID_10203100B_LeeWenKang_Assg01), as a IT student, I have a personal "rule" I follow. That "rule" is to always develop bit size code and always check and ensure that they contain no errors. Same as my previous assignment, I continued to follow this "rule", allowing my to troubleshoot more easily and check errors faster. As a result, I have spent lesser time debugging, and more time writing actual code.
 

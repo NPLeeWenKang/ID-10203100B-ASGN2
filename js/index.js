@@ -1,4 +1,5 @@
 function checkDistance(distance) {
+    // Converts distance data into the correct display type
     distanceInKm = (distance).toFixed(2);
     if (distanceInKm >= 1) {
         distanceInMile = (distance / 1.609).toFixed(2);
@@ -11,6 +12,7 @@ function checkDistance(distance) {
     }
 }
 function convertSecondsTo_Hr_Min_Sec(time) {
+    //Converts seconds to hour_min_sec
     var timeHr = Math.floor(time / 60 / 60)
     time -= timeHr * 60 * 60
     var timeMin = Math.floor(time / 60)
@@ -23,6 +25,7 @@ function convertSecondsTo_Hr_Min_Sec(time) {
     }
 }
 function loadList() {
+    // loads the data from local storage
     let stateString = localStorage.getItem("state");
     if (stateString != null) {
         let state = JSON.parse(stateString);
@@ -37,6 +40,8 @@ function loadList() {
 
 }
 function loadChart(dateData, tempData) {
+    // loads the ChartJS chart
+    // Uses OpenWeatherMap API's hourly temperatures to make the map
     const ctx = document.getElementById("myChart");
     var month = new Array();
     month[0] = "Jan";
@@ -105,17 +110,18 @@ function loadChart(dateData, tempData) {
 }
 
 function createListElement(listDOM, indiviualElement, key) {
+    // Iterates to form all the route elements
     const card = document.createElement("li");
     card.className = "list-group-item";
     card.id = key;
 
-    const nameDiv = document.createElement("div");
+    const nameDiv = document.createElement("div"); // Name of Route
     nameDiv.innerHTML = indiviualElement.name;
 
-    const distanceDiv = document.createElement("div");
+    const distanceDiv = document.createElement("div"); // Distance of Route
     distanceDiv.innerHTML = "Distance: " + checkDistance(parseFloat(indiviualElement.distance));
 
-    const timeTakenDiv = document.createElement("div");
+    const timeTakenDiv = document.createElement("div"); // Time taken by user
     if (indiviualElement.timeInSec > 0) {
         const time = convertSecondsTo_Hr_Min_Sec(indiviualElement.timeInSec)
         const speed = ((parseFloat(indiviualElement.distance) / indiviualElement.timeInSec) * 60 * 60).toFixed(2)
@@ -125,7 +131,7 @@ function createListElement(listDOM, indiviualElement, key) {
     }
 
 
-    const runningDate = new Date(parseInt(key));
+    const runningDate = new Date(parseInt(key)); // Date of creation of Route
     const dateDiv = document.createElement("div");
     dateDiv.style.color = "#b0b0b0";
     dateDiv.style.fontSize = "11px";
@@ -167,19 +173,22 @@ const mapButton = document.getElementById("button-to-map");
 mapButton.addEventListener("click", function () {
     window.location.href = "map.html";
 })
+
 function createDateString_DMY(date) {
+    // convert date to dd/mm/yyyy format (10/1/2021)
     var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     const myDate = new Date(date * 1000);
     return `${myDate.getDate()} ${month[myDate.getMonth()]} ${myDate.getFullYear()}`;
 }
 function createDateString_DMD(date) {
-
+    // convert date to dddd, mmmm dd format (Sun, Dec 8)
     var month = ["Jan", "Feb", "Mar", "Apr", "Mar", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
     var day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
     const myDate = new Date(date * 1000);
     return `${day[myDate.getDay()]}, ${month[myDate.getMonth()]} ${myDate.getDate()}`;
 }
 function createDailyListNode(dailyForecast, data) {
+    // Loads the daily weather forecast
     const parentDiv = document.createElement("div");
     parentDiv.className = "row g-0 d-flex align-items-center";
     const dateDiv = document.createElement("div");
@@ -218,6 +227,7 @@ function createDailyListNode(dailyForecast, data) {
     dailyForecast.appendChild(parentDiv);
 }
 function initHourly(weatherResult) {
+    // Prepares the data for loadChart()
     const tempData = [];
     const dateData = [];
     for (var i = 0; i <= 12; i++) {
@@ -238,6 +248,7 @@ function initHourly(weatherResult) {
     loadChart(dateData, tempData);
 }
 function initDaily(weatherResult) {
+    // Prepares the data for createDailyListNode()
     const dailyForecast = document.getElementById("daily-forecast");
     $("#daily-forecast h5").append(`<span> ${weatherResult.timezone}</span>`)
     $("#daily-forecast span").css("fontSize", "14px")
@@ -249,23 +260,27 @@ function initDaily(weatherResult) {
 
 }
 $.ajax({
+    // Requests from IPapi
     method: "POST",
     url: "https://ipapi.co/json",
     error: (function () {
         alert("AJAX error (https://ipapi.co/json)")
     }),
 }).done(function (ipResult) {
+    // Using the Lat Long from IPapi, search for weather data at that coordinate
     $.ajax({
         url: `https://api.openweathermap.org/data/2.5/onecall?lat=${ipResult.latitude}&lon=${ipResult.longitude}&appid=eea225520939f59f9dcd0ea6046d512b&exclude=current,minutely,alerts&units=metric`
     }).done(function (weatherResult) {
-        console.log(weatherResult);
         initHourly(weatherResult);
         initDaily(weatherResult);
     })
 })
 
 function initDisplayListeners() {
+    // initiates the eventlisteners for screensize changes.
+    // helps in mobile display
     if (window.innerWidth < 768) {
+        // On first start up
         $("#statistics").css("display", "none");
         $("#weather-link").css("display", "");
         $(".list-group-item").off('mouseenter mouseleave');
@@ -285,6 +300,7 @@ function initDisplayListeners() {
         })
     }
     window.addEventListener("resize", function (event) {
+        // Only on screen size change
         if (window.innerWidth < 768) {
             $("#statistics").css("display", "none");
             $("#weather-link").css("display", "");
@@ -307,6 +323,7 @@ function initDisplayListeners() {
     })
 }
 function findTotalDist(distanceList) {
+    // Finds total distance in a list of distances
     var total_dist = 0;
     distanceList.forEach(dist => {
         total_dist += dist;
@@ -314,13 +331,15 @@ function findTotalDist(distanceList) {
     return total_dist;
 }
 function findTotalTime(timeList) {
+    // Finds total time from a list of time in seconds
     var total_time = 0;
     timeList.forEach(time => {
         total_time += time;
     });
-    return total_time / 60;
+    return total_time;
 }
 function findFastestSpeed(state) {
+    // Finds fastest run
     const speedList = [];
     for (const [key, value] of Object.entries(state)) {
         if (value.timeInSec != 0) {
@@ -330,6 +349,7 @@ function findFastestSpeed(state) {
     return Math.max.apply(null, speedList)
 }
 function loadBadgesAndStats() {
+    // loads the statistics + badges portion of the website
     let stateString = localStorage.getItem("state");
     if (stateString != null) {
         let state = JSON.parse(stateString);
@@ -344,6 +364,7 @@ function loadBadgesAndStats() {
             }
 
         }
+
         // Badges
         $("#highest-dist").attr("data-bs-content", `Longest distance ran: ${Math.max.apply(null, distanceList).toFixed(2)} km (${(Math.max.apply(null, distanceList) / 1.609).toFixed(2)} mi)`)
         $("#amt-runs").attr("data-bs-content", `Number of runs: ${distanceList.length}`)
@@ -356,25 +377,26 @@ function loadBadgesAndStats() {
             const dateDif = dateNow.getFullYear() - oldDate.getFullYear()
             $("#acc-lifespan").attr("data-bs-content", `Account age: ${dateDif} years`)
         }
+
         // Table Stats
-        console.log(timeList)
         if (findTotalTime(timeList) != 0) {
-            $("#avg-run-time").text(`${(findTotalTime(timeList) / timeList.length).toFixed(2)}min`)
+            $("#avg-run-time").text(`${((findTotalTime(timeList) / 60) / timeList.length).toFixed(2)}min`)
         }
         $("#total-dist").text(`${findTotalDist(distanceList).toFixed(2)}km`)
         if (findTotalTime(timeList) != 0) {
-            $("#total-run-time").text(`${(findTotalTime(timeList).toFixed(2))}h`)
+            $("#total-run-time").text(`${((findTotalTime(timeList) / 60 / 60).toFixed(2))}h`)
         }
 
     }
 
 }
 function initModalListener() {
+    // Initates Bootstrap's Modal buttons
+
     const deleteButton = document.getElementById("delete");
     deleteButton.addEventListener("click", function () {
-        console.log("ok")
+        // Deletes the specific route and reloads the list of routes
         const key = this.getAttribute("key")
-        console.log(key)
         const state = JSON.parse(localStorage.getItem("state"));
         delete state[`${key}`];
         localStorage.setItem("state", JSON.stringify(state));
@@ -385,6 +407,7 @@ function initModalListener() {
 
     const saveButton = document.getElementById("save")
     saveButton.addEventListener("click", function (event) {
+        // Update the specific route and reloads the list of routes
         event.preventDefault();
         const key = this.getAttribute("key")
         const state = JSON.parse(localStorage.getItem("state"));
@@ -402,11 +425,12 @@ function initModalListener() {
 
     const viewButton = document.getElementById("view")
     viewButton.addEventListener("click", function (event) {
-        console.log("view")
+        // Opens the viewMap.html file and puts the route's ID into the url query
         window.location.href = `viewMap.html?key=${this.getAttribute("key")}`;
     })
 }
 function editButtonListener() {
+    // Initials the Edit button for every route listed
     let stateString = localStorage.getItem("state");
     let state = JSON.parse(stateString);
     const editButton = document.getElementsByClassName("list-group-item");
@@ -425,6 +449,7 @@ initModalListener();
 initDisplayListeners();
 // Firebase Database
 function getUserData(userId) {
+    // Using the user's firebase ID, retrieves the data and places into the local storage
     firebase.database().ref('/users/' + userId).once('value').then((snapshot) => {
         if (snapshot.val() != null) {
             localStorage.setItem("state", JSON.stringify(snapshot.val().state))
@@ -436,8 +461,8 @@ function getUserData(userId) {
     });
 }
 function updateUserData(newState) {
+    // Using the user's firebase ID, updates the data in the database
     var user = firebase.auth().currentUser;
-    console.log(newState)
     firebase.database().ref('users/' + user.uid).set({
         state: newState
     });
@@ -457,10 +482,11 @@ var googleProvider = new firebase.auth.GoogleAuthProvider();
 var database = firebase.database();
 firebase.auth().onAuthStateChanged(((user) => {
     if (user) {
-        console.log(user.uid)
+        // If the user is logged in, get user's data
         getUserData(user.uid);
         $('#login-modal').modal("hide");
     } else {
+        // If the user is not logged in, show the login Modal
         $('#login-modal').modal("show")
         const loginBtn = document.getElementById("login");
         loginBtn.addEventListener("click", function () {

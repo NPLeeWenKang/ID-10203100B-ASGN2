@@ -1,6 +1,10 @@
-
+// viewMap.js is a striped down version of map.js
+// This is because viewMap.js do not need all the features in map,js
 
 function setMap(map, lineList, markerList) {
+    // loads searches correct route data from local storage
+    // then loads the markers and polylines onto the map
+
     const queryString = window.location.search;
     const key = new URLSearchParams(queryString).get("key")
     const state = JSON.parse(localStorage.getItem("state"))
@@ -16,6 +20,8 @@ function setMap(map, lineList, markerList) {
     }
     $("#pathName").val(`Duplicate of ${chosenMapState.name}`)
     drawLine(lineList, map)
+
+    // Set map center to the first marker's coordinates
     map.setCenter(lineList[0])
 }
 function initListeners(pathHistory, lineList, markerList) {
@@ -23,7 +29,6 @@ function initListeners(pathHistory, lineList, markerList) {
     //$('#saveButton').replaceWith($('#saveButton').clone());
     savebutton.addEventListener("click", function (event) {
         event.preventDefault();
-        console.log(event.target)
         let passed = true;
         // Check if distance is valid
         if ($("#metric").val().length >= 1 && $("#imperial").val().length >= 1) {
@@ -92,6 +97,8 @@ function initListeners(pathHistory, lineList, markerList) {
             var timeHr = 0;
             var timeMin = 0;
             var timeSec = 0;
+            // Checks if time is empty, IF NULL then 0.
+            // IF not NULL, then time will be converted to seconds
             if ($("#hr").val() != "") {
                 var timeHr = parseInt($("#hr").val()) * 60 * 60
             }
@@ -101,9 +108,9 @@ function initListeners(pathHistory, lineList, markerList) {
             if ($("#sec").val() != "") {
                 var timeSec = parseInt($("#sec").val())
             }
-            console.log(lineList)
             let totalTime = timeHr + timeMin + timeSec
             let originalState = localStorage.getItem("state");
+            // Time spent running is stored in seconds
             let arr = {
                 name: $("#pathName").val(),
                 distance: $("#distance").attr("distance"),
@@ -117,28 +124,7 @@ function initListeners(pathHistory, lineList, markerList) {
             }
             setUserData(newState)
         }
-        // if ($("#pathName").val().length >= 1) {
-        //     $("#pathName").addClass("is-valid").removeClass("is-invalid")
-        //     $("#metric").addClass("is-valid").removeClass("is-invalid")
-        //     $("#imperial").addClass("is-valid").removeClass("is-invalid")
-        //     let originalState = localStorage.getItem("state");
-        //     let arr = {
-        //         name: $("#pathName").val(),
-        //         distance: $("#distance").attr("distance"),
-        //         lineList: lineList,
-        //     }
-        //     let newState = {
-        //         ...JSON.parse(originalState),
-        //         [`${Date.now()}`]: arr,
-        //     }
-        //     localStorage.setItem('state', JSON.stringify(newState))
-        //     // //window.location.href = "../index.html"
-        // } else {
-        //     $("#pathName").addClass("is-invalid").removeClass("is-valid")
-        //     $("#metric").addClass("is-invalid").removeClass("is-valid")
-        //     $("#imperial").addClass("is-invalid").removeClass("is-valid")
-        //     console.log($("#distance").attr("distance"))
-        // }
+
 
     })
     $('#staticBackdrop').on('hide.bs.modal', function () {
@@ -152,6 +138,7 @@ function initListeners(pathHistory, lineList, markerList) {
 
 
 function getDistanceFromLatLonInKm(mk1, mk2) {
+    // Uses havasine formula to get distance
     var R = 6371; // Radius of the Earth in miles
     var rlat1 = mk1.position.lat() * (Math.PI / 180); // Convert degrees to radians
     var rlat2 = mk2.position.lat() * (Math.PI / 180); // Convert degrees to radians
@@ -162,9 +149,12 @@ function getDistanceFromLatLonInKm(mk1, mk2) {
     return d;
 }
 function deg2rad(deg) {
+    // converts degrees to radian
     return deg * (Math.PI / 180)
 }
 function backButton(div) {
+    // Sets up the back button to be placed on the map
+
     const button = document.createElement("div");
     button.style.display = "flex";
     button.style.justifyContent = "center";
@@ -200,6 +190,8 @@ function backButton(div) {
 }
 
 function submitButton(div) {
+    // Sets up the back button to be placed on the map
+
     const button = document.createElement("div");
     const attribute1 = document.createAttribute("data-bs-toggle");
     attribute1.value = "modal"
@@ -277,6 +269,9 @@ function distanceDisplay(div, markerList) {
 
 }
 function calculateDistance(markerList) {
+    // Each marker contains {lat: , Long: }
+    // Using a list of markers, finds the distance and display the final (total) distance on the map
+
     var distance = 0;
     for (let i = 0; i < markerList.length; i++) {
         if (markerList[i] == markerList[markerList.length - 1]) {
@@ -286,6 +281,7 @@ function calculateDistance(markerList) {
         let point2 = markerList[i + 1];
         distance += getDistanceFromLatLonInKm(point1, point2)
         distanceInKm = (distance).toFixed(2)
+        // Determines if distance shoule be displayed in KM or M
         if (distanceInKm >= 1) {
             distanceInMile = (distance / 1.609).toFixed(2);
             $("#distance").attr("distance", `${distance}`)
@@ -307,6 +303,8 @@ function calculateDistance(markerList) {
     }
 }
 function drawLine(lineList, map) {
+    // Draws a polyline onto the map
+    // https://developers.google.com/maps/documentation/javascript/examples/polyline-simple
     const flightPath = new google.maps.Polyline({
         path: lineList,
         geodesic: true,
@@ -317,24 +315,18 @@ function drawLine(lineList, map) {
     flightPath.setMap(map);
 }
 
-function gm_authFailure(err) {
-    console.log(window.google.maps.disabled)
-};
-const callback = (results, status) => {
-    console.log(status)
-    if (status === 'OK') {
-        console.log(results);
-    } else {
-        // handle this case
-    }
-};
+
 const lineList = []
 function initMap() {
+    // It is a callback, so that after the <script> tag is run, this function will run.
     const myLatlng = { lat: 0, lng: 0 };
     const markerList = []
 
     const pathHistory = []
     initListeners(pathHistory, lineList, markerList);
+
+
+    //Creates map
     const map = new google.maps.Map(document.getElementById("map"), {
         zoom: 15,
         center: myLatlng,
@@ -344,8 +336,8 @@ function initMap() {
         fullscreenControl: false,
     });
 
+    // Sets up the buttons on the map
     setMap(map, lineList, markerList)
-    console.log(lineList)
     const backDiv = document.createElement("div");
     backButton(backDiv);
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(backDiv);
@@ -362,6 +354,7 @@ function initMap() {
 }
 
 function setUserData(newState) {
+    // Saves route to the database
     var user = firebase.auth().currentUser;
     firebase.database().ref('users/' + user.uid).set({
         state: newState
@@ -385,8 +378,10 @@ var firebaseConfig = {
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
-var googleProvider = new firebase.auth.GoogleAuthProvider();
 var database = firebase.database();
+
+// Checks if the user is logged in. If not,
+// then send user back to index.html
 firebase.auth().onAuthStateChanged(((user) => {
     if (!user) {
         window.location.href = "index.html"
