@@ -1,4 +1,4 @@
-# Personal Portfolio
+# RunPal
 Name: Lee Wen Kang<br />
 Class: P03<br />
 Website URL: https://npleewenkang.github.io/ID-10203100B-ASGN2/<br/>
