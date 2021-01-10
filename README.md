@@ -7,7 +7,7 @@ Website URL: https://npleewenkang.github.io/ID-10203100B-ASGN2/<br/>
 | Task        | Status           | Date finished  |
 | ------------- |:-------------:| -----:|
 | Finish README      | dne |  |
-| Implement login page      |  |  |
+| Implement login page      | done | 9/1/2021 |
 | Edit CSS tag names to be best practice      |      |    |
 | Check compatibility |       |     |
 | Finish badge and statistic system |       |     |
@@ -60,14 +60,32 @@ In addition to using W3School's CSS and Markup validator service, for this assig
 2. W3C Markup Validation Service: https://validator.w3.org/
 3. JSHint Javascript Validator:https://jshint.com/
 ### Screen size
-
+To ensure that users will be able to use this website on different screen sizes, I have detailed several different methods I have used to enure that the navigation and viewability of the website is sound.
+1. Resizing browser manually<br/>
+By resizing the browser manually, I am able to quickly view my website in different view heights and widths. Although this may not be a full proof way to test screen sizes, it allows for quick and easy testing (testing while developing).
+2. Using Chrome's mobile emulator<br/>
+By inspecting the page, a button will appear. This button toggles Chrome's mobile emulator, allowing you to view the screen through different phones. This is a quick test to ensure that the contents in the screen are readable and properly aligned. However this method has several limitations, as it does not actually run the website on a mobile phone, but only simulates it. To read more about Chrome's mobile emulator: https://developers.google.com/web/tools/chrome-devtools/device-mode.
+3. Using a physical phone<br/>
+Apart from using the other methods to test my website in different screen size, I also used my Samsung J7 phone to view the website. This allows me to accurately experience how navigating and viewing the contents on a mobile phone feels like.
 ### Browsers
+As HTML, CSS and JS may be compiled differently in different browsers, it is vital to test the website on different browsers. In addition to testing HTML, CSS and JS, I had to also test my APIs on different browsers to also ensure they are working perfectly.
 
-### Links
+As I developed my website on Chrome, I went and tested my website on FireFox and Microsoft Edge. This allowed me to ensure that my website was functional on different browsers. In addition, 
 
-### Contact form
+### APIs
+As my website used Ipapi, an API that uses the user's data to obtain their location, I had to enure that the API was able to work in other countries besides Singapore. As a result, I used TunnelBear, a VPN service to simulate being in different parts of the world.
+
+### Google API rules
+As I have set Google API rules to my API keys, I had to ensure the API works even when I have pushed my code to Github.
+### Firebase Database Rules
+To ensure that my user's data is safe and secure, I had to implement some Database rules to ensure that only authenticated users are able to access the database. To test these rules, I had tried to access the database when I was not authenticated which successfully denied access to me.
 
 ## Credits
+### Technologies Used
+* HTML
+* CSS
+* Javascript
+* Jquery
 ### APIs and Library
 * Google Maps Javascript API: https://developers.google.com/maps/documentation/javascript/overview
 

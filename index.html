@@ -103,28 +103,26 @@
                         <div>
                             <button id="acc-lifespan" type="button" class="btn btn-secondary" data-bs-container="body"
                                 data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Account age">
-                                <img style="pointer-events: none;" src="src/medal-1.png" width="30px" alt="" srcset="">
+                                <img style="pointer-events: none;" src="src/medal-1.png" width="30" alt="" srcset="">
                             </button>
                         </div>
                         <div>
                             <button id="highest-dist" type="button" class="btn btn-secondary" data-bs-container="body"
                                 data-bs-toggle="popover" data-bs-placement="bottom"
                                 data-bs-content="Longest distance ran: 0">
-                                <img style="pointer-events: none;" src="src/runner.png" width="30px" alt="" srcset="">
-                            </button>
+                                <img style="pointer-events: none;" src="src/runner.png" width="30" alt="" srcset="">
                             </button>
                         </div>
                         <div>
                             <button id="fastest-run" type="button" class="btn btn-secondary" data-bs-container="body"
                                 data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Fastest run">
-                                <img style="pointer-events: none;" src="src/stopwatch.png" width="30px" alt=""
-                                    srcset="">
+                                <img style="pointer-events: none;" src="src/stopwatch.png" width="30" alt="" srcset="">
                             </button>
                         </div>
                         <div>
                             <button id="amt-runs" type="button" class="btn btn-secondary" data-bs-container="body"
                                 data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Number of runs: 0">
-                                <img style="pointer-events: none;" src="src/number-count.png" width="30px" alt=""
+                                <img style="pointer-events: none;" src="src/number-count.png" width="30" alt=""
                                     srcset="">
                             </button>
                         </div>
@@ -144,7 +142,7 @@
                     <button type="submit" class="btn btn-info d-flex justify-content-center align-items-center"
                         data-bs-dismiss="modal" style="padding:5px; margin-left: 10px;" id="view">
                         <img src="src/map.svg" alt="map" style="padding-right: 5px;">
-                        <div>View</div>
+                        View
                     </button>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
@@ -168,7 +166,7 @@
                     </div>
                     <div>
                         <button type="submit" class="btn btn-danger" data-bs-dismiss="modal" id="delete">Delete</button>
-                        <button type="submit" class="btn btn-primary" id="save">Save</button>
+                        <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" id="save">Save</button>
                     </div>
 
                 </div>
@@ -201,7 +199,7 @@
     crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="js/index.js"></script>
-<script type="text/javascript">
+<script>
     $(function () {
         $('[data-bs-toggle="popover"]').popover(
             {

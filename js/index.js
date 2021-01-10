@@ -378,6 +378,7 @@ function initModalListener() {
         const state = JSON.parse(localStorage.getItem("state"));
         delete state[`${key}`];
         localStorage.setItem("state", JSON.stringify(state));
+        updateUserData(state)
         loadList();
         loadBadgesAndStats();
     })
