@@ -73,7 +73,7 @@ As HTML, CSS and JS may be compiled differently in different browsers, it is vit
 
 As I developed my website on Chrome, I went and tested my website on FireFox and Microsoft Edge. This allowed me to ensure that my website was functional on different browsers. In addition, 
 
-### IPapi API
+### APIs
 As my website used Ipapi, an API that uses the user's data to obtain their location, I had to enure that the API was able to work in other countries besides Singapore. As a result, I used TunnelBear, a VPN service to simulate being in different parts of the world.
 
 ### Google API rules
