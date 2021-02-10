@@ -349,7 +349,7 @@ function setCenterMap(map) {
             alert("AJAX error (https://ipapi.co/json)")
         }),
     }).done(function (result) {
-        map.setCenter({ lat: 1.4365744324492085, lng: 103.78655885610281 })
+        map.setCenter({ lat: result.latitude, lng: result.longitude })
     })
 }
 
@@ -364,7 +364,7 @@ function initMap() {
 
     //Creates map
     const map = new google.maps.Map(document.getElementById("map"), {
-        zoom: 15,
+        zoom: 10,
         center: myLatlng,
         clickableIcons: false,
         mapTypeControl: false,
@@ -394,7 +394,7 @@ function initMap() {
             map: map,
         });
         markerList.push(marker)
-        console.log(marker.position.lat(), marker.position.lng())
+
         lineList.push(mapsMouseEvent.latLng.toJSON())
         marker.addListener('click', () => {
             if (markerList.indexOf(marker) == 0 && markerList.length > 2) {
